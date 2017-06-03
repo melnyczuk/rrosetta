@@ -3,7 +3,7 @@ MA COMP ARTS FINAL PROJECT DOCUMENTATION
 ##################
 ### -- PLAN -- ###
 ------------------
-1-- build scraper & craweler:
+1-- build scraper & crawler:
     stock up on methods for aquiring 'zine' content;
 
 2-- metadata aquisition tools:
