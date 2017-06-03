@@ -18,9 +18,14 @@ MA COMP ARTS FINAL PROJECT DOCUMENTATION
 5-- build print:
     hardware for installation, ie, convert old inkjet printer;
 
+##############################
+### -- POSSIBLE METHODS -- ###
+------------------------------
+-- python openCV for content/metadata analysis
+-- js for design
 
 ########################################
 ### -- OTHER INTERESTING PROJECTS -- ###
 ----------------------------------------
-python beautifulsoup news feed parsing artwork in NY (http://www.nytimes.com/2007/10/25/arts/design/25vide.html)
+-- python beautifulsoup news feed parsing artwork in NY (http://www.nytimes.com/2007/10/25/arts/design/25vide.html)
 
