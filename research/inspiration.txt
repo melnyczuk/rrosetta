@@ -1,0 +1,4 @@
+######################################################
+### -- INSPIRATION / OTHER INTERESTING PROJECTS -- ###
+------------------------------------------------------
+-- python beautifulsoup news feed parsing artwork in NY (http://www.nytimes.com/2007/10/25/arts/design/25vide.html)

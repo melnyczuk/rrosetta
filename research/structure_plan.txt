@@ -1,0 +1,23 @@
+############################
+### -- STRUCTURE PLAN -- ###
+----------------------------
+1-- build scraper & crawler:
+    - stock up on methods for aquiring 'zine' content;
+
+2-- metadata aquisition tools:
+    - find robust + accurate ways to access 'user' metadata;
+
+3-- algorithms to analyse this data:
+    - [problematic] find robust way to analyse metadata and generate search terms for content;
+    - ensure that this is not random--seek consistency (maybe publishing source links at back solves this);
+
+4-- alogrithmic methods for print design:
+    - determine how to arrange content;
+    - systematise content heirarchy;
+
+5-- build print:
+    - hardware for installation, ie, convert old inkjet printer;
+    - [TODO] figure out binding mechanism;
+
+6-- online repository:
+    - works as documentation of the project as it goes on, leaves something permanent and accessible to show;
