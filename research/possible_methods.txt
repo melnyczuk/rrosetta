@@ -5,3 +5,4 @@
 -- js for design (also allows an online repository to be kept easily)
 -- interface with wikipedia, use text from there as content or use it as a source for external article lists
     - using external reference links has the added benefit of prefigured 'good' content for text and pics
+-- process / research presented in zine format.
