@@ -1,3 +1,4 @@
+## PY3 ## HPM ## CREATES CSV OF EVERY LINK BY TAG, ID
 import sys                                                                      # inc py install;
 import requests                                                                 # pip install requests;
 import csv                                                                      # inc py install;
@@ -18,13 +19,13 @@ def dict_links(soup, tag):                                                      
         for i, t in enumerate(soup.find_all(tagname)):                          # loop through all tags of type t in soup, and track of iteration;
             if t.has_attr('id'):                                                # look for id attribute;
                 id = t.attrs['id']                                              # get value of id attribute;
-                ids.append(str(i) + ' (' + str(id) + ')')                       # append iteration and id number to list of ids;
+                ids.append(str(i) + ' ' + str(id))                              # append iteration and id number to list of ids;
             elif t.has_attr('alt'):                                             # if no id attribute, find alt attribute;
                 alt = t.attrs['alt']                                            # get value of alt attribute;
-                ids.append(str(i) + ' (' + str(alt) + ')')                      # append iteration number and alt to list of ids;
+                ids.append(str(i) + ' ' + str(alt))                             # append iteration number and alt to list of ids;
             elif t.has_attr('name'):                                            # if not id or alt, find name attribute;
                 name = t.attrs['name']                                          # get value of name attribute;
-                ids.append(str(i) + ' (' + str(name) + ')')                     # append interation number & name to list of ids;
+                ids.append(str(i) + ' ' + str(name))                            # append interation number & name to list of ids;
             else: ids.append(str(i))                                            # if no id, alt or name: just use iteration number;
 
             if t.has_attr('href'):                                              # look for href link attribute;
@@ -56,11 +57,22 @@ def set_tag_types(tags):
     tagTypes.discard(None)                                                      # removes any non real tags 
     return tagTypes                                                             # returns as set;
 
+## MAKE AND SAVE CSV FILE FROM DICTIONARY ##   
+def save_csv(csvName, dictionary):
+    with open('{}.csv'.format(csvName), 'w', newline='') as csvfile:            # make and save a csv with name of site page;
+        writer = csv.writer(csvfile)                                            # make csv writer;
+        for tag in dictionary:                                                  # for all keys in dictionary of id/src dictionaries
+            for k, v in dictionary[tag].items():                                # loop through the dictionary of dictionaries;
+                t = str(tag)
+                k = str(k)                                                      # make a csv entry with tag and id (aka outer and inner dictionary keys) combined
+                v = str(v)                                                      # make a csv entry for the links
+                writer.writerow([t, k, v])                                      # write these as a new row in the csv file and save it;
+
 ## RUN THIS BAD BOY: GIVE IT A URL IN CMD ##
-if __name__ == "__main__":
+def main():
     siteURL = sys.argv[1]                                                       # pass in a url;
     wiki = siteURL.split('/')                                                   # parse url at /;
-    wiki = [len(wiki)-1]                                                        # get final domain name (aka page name);                             
+    wiki = wiki[2] + '_' + wiki[len(wiki)-1]                                                    # get final level domain name (aka page name);                             
     soup = get_soup(siteURL)                                                    # turn url into soup;
 
     tagsList = list_tags(soup.descendants)                                      # get list of all tags present in whole soup;
@@ -72,11 +84,8 @@ if __name__ == "__main__":
         srcList.append(dict_links(soup, tag))                                   # appends the id/src dictionary for every tag type;
     srcDict = dict(zip(tagTypes, srcList))                                      # zips together another dictionary with tag as key and the dictionary of id/src for that tag;
     srcDict = {k: v for k, v in srcDict.items() if v}                           # removes blank id/src dictionaries;
-    
-    with open('{}.csv'.format(wiki), 'w') as csvfile:                           # make and save a csv with name of site page;
-        writer = csv.writer(csvfile)                                            # make csv writer;
-        for tag in srcDict:                                                     # for all keys in dictionary of id/src dictionaries
-            for k, v in srcDict[tag].items():                                   # loop through the dictionary of dictionaries;
-                k = str(tag)+'_'+str(k)                                         # make a csv entry with tag and id (aka outer and inner dictionary keys) combined
-                v = str(v)                                                      # make a csv entry for the links
-                writer.writerow([k, v])                                         # write these as a new row in the csv file and save it;
+
+    save_csv(wiki, srcDict)                                         
+
+if __name__ == "__main__":
+    main()

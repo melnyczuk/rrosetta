@@ -1,0 +1,16 @@
+2017-06-22:
+    --Built a script to catalog all links on a webpage into a csv file. This may be used to generate content from, ie, a wikipedia page: allowing quick access to referenced sites & articles etc. Also contains all image srcs.
+
+2017-06-23:
+    --Read the Gmail API terms of service: all seems fine, project seems legit; exception: 5e1-"Prohibitions on Content":"Scrape, build databases, or otherwise create permanent copies of such content, or keep cached copies longer than permitted by the cache header" may be problematic? (https://console.developers.google.com/tos?id=universal)
+    --If gmail used, a plus would be the level of invasion: folks may feel shocked that the work would use their email; also, could use mailing lists and spam subscriptions to get a quick insight into user interests.
+    
+2017-07-03:
+    --Lots of debate about the ethical/practical implications of my project. Can't help but see this as further proof this is a ripe topic.
+    --Created 8Q survey: results interesting, especially after posting to the forum.
+    --I should be sure to include a link to the place where you revoke access at the same time the email goes out saying "yr zine is ready in the lobby"
+    
+2017-07-04:
+    --Successfully accessed the content of my email messages.
+    --Orange also making zines markup project!
+    --

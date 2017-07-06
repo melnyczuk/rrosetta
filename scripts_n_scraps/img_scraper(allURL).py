@@ -1,3 +1,4 @@
+## PY3 ## HPM ## THIS SCRIPT SAVES ALL IMAGES FROM WEBSITE ##
 import sys
 from io import BytesIO                                                  # for converting http response bytes into image;
 from urllib.parse import urlparse                                       # for using url in filename;
@@ -8,7 +9,7 @@ import requests                                                         # for ht
 ## FIND ALL IMG TAGS ON ANY GIVEN URL ##
 def findIMGs(url):                                                      # pass url and send request;
     webpage = requests.get(url).content
-    soup = BeautifulSoup(webpage, "lxml")                               # translate into html and parse;
+    soup = BeautifulSoup(webpage, 'html.parser')                               # translate into html and parse;
     imgs = [img['src'] for img in soup.find_all('img')]
     return imgs                                                         # store the src of all img tags in list;     
 
