@@ -1,2 +1,4 @@
 ./Private
 ./.vscode
+*.json
+*.indd
