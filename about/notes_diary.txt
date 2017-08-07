@@ -34,3 +34,7 @@
         --Reading Gmail sent emails - but not all and not enough
         --Getting nouns from emails - small number of emails reducing the accuracy - need to link semantics
         --Creating JSON/s from wiki - needs to be more robust!
+
+2017-08-07:
+    --Getting a lot more sent emails (160 / 1300)
+    --Sentiment Analysis is not working - super inaccurate - fuck.

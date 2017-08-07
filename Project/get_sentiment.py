@@ -74,7 +74,8 @@ def make_sentiment_dict(_sentences):
     for sentence in _sentences:
         t_dict = sent_anal_chunks(get_chunks(sentence))
         for k in t_dict.keys():
-            _dict.setdefault(k, []).append(t_dict[k])
+            if len(k) > 1 and k.isalpha:
+                _dict.setdefault(k, []).append(t_dict[k])
     return _dict
 
 # MAKE A DICTIONARY THAT COUNTS HOW MANY TIMES THE NOUN WAS USED #
@@ -96,8 +97,9 @@ def count_sentiment_dict(_emails):
 def format_emails(_emails):
     emails = []
     for email in _emails:
-        email = email.decode("utf-8") 
+        email = email.decode("utf-8").lower()
         email.replace('\n', " ")
+        email.replace('\r', " ")
         emails.append(email)
     return emails
 

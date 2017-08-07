@@ -4,15 +4,11 @@
 #-------------------------
 from __future__ import print_function
 from bs4 import BeautifulSoup
-import base64
-import binascii
-import httplib2
-import os
+import os, base64, httplib2
 #-------------------------
 ## GOOGLE API MODULES ## 
-from apiclient import discovery
-from oauth2client import client
-from oauth2client import tools
+from apiclient import discovery, http
+from oauth2client import client, tools
 from oauth2client.file import Storage
 #-------------------------
 try:
@@ -51,32 +47,56 @@ def get_credentials():
         flow.user_agent = APPLICATION_NAME
         if flags:
             credentials = tools.run_flow(flow, store, flags)
-        else: # Needed only for compatibility with Python 2.6
-            credentials = tools.run(flow, store)
+        #else: # Needed only for compatibility with Python 2.6
+            #credentials = tools.run(flow, store)
         print('Storing credentials to ' + credential_path)
     return credentials
 
 #-------------------------
-def get_service():
+def get_service(_batch=False):
     credentials = get_credentials()
     http = credentials.authorize(httplib2.Http())
+    #if _batch: return discovery.build('gmail', 'v1')
     return discovery.build('gmail', 'v1', http=http)
 
 #-------------------------
-def access_msgs(_service=get_service(), _userID='me'):
+def get_page_tokens(_service=get_service(),  _userID='me'):
+    sent_results = _service.users().messages().list(labelIds='SENT', userId=_userID).execute()
+    newPT = sent_results.get('nextPageToken')
+    pageTokens = set()
+    pageTokens.add(newPT)
+    while newPT != None:
+        sent_results = _service.users().messages().list(labelIds='SENT', userId=_userID, pageToken=newPT).execute()
+        newPT = sent_results.get('nextPageToken')
+        pageTokens.add(newPT)    
+    return pageTokens
+
+#-------------------------
+def single_access_msgs(_service=get_service(), _userID='me'):
     sent_results = _service.users().messages().list(labelIds='SENT', userId=_userID).execute()
     return sent_results.get('messages', [])
 
 #-------------------------
-def get_sent_bodys(_sentMSGs, _service=get_service(), _userID='me'):
-    if not _sentMSGs:
-        print('no sent msgs')
-    else:
-        print("MSGs: ", len(_sentMSGs))
-        sentIDs = []
-        for msg in _sentMSGs:
-            sentIDs.append(msg['id'])
+def get_sent_bodys(_pageTokens, _service=get_service(), _userID='me'):
     
+    if not _pageTokens:
+        print('no pages')
+        sentMSGs = single_access_msgs()
+    else:
+        sentMSGs = [] 
+        for token in _pageTokens:
+            sent_results = _service.users().messages().list(labelIds='SENT', userId=_userID, pageToken=token).execute()
+            sentMSGs.append(sent_results.get('messages', []))
+    
+    if not sentMSGs:
+        print('no sent messages')
+    else:
+        print('Pages: ', len(_pageTokens))
+        sentIDs = []
+        for page in sentMSGs:
+            for MSG in page:
+                sentIDs.append(MSG['id'])
+
     if not sentIDs:
         print('no sent IDs')
     else:
@@ -99,7 +119,7 @@ def get_sent_bodys(_sentMSGs, _service=get_service(), _userID='me'):
 #-------------------------
 def read_sent_content(_bodys):
     print("bodies: ", len(_bodys))
-    content = []
+    sent_emails = []
     if not _bodys:
         print('no MSG bodies')
     else:
@@ -109,10 +129,10 @@ def read_sent_content(_bodys):
                 pass
             else:
                 try:
-                    content.append(relaxed_decode_base64(body['data']))
+                    sent_emails.append(str(relaxed_decode_base64(body['data'])).encode('utf-8'))
                 except:
                     pass
-    return content
+    return sent_emails
 #-------------------------            
 def relaxed_decode_base64(data):
     """
@@ -139,11 +159,13 @@ def relaxed_decode_base64(data):
     return base64.b64decode(data)
 #------------------------- 
 def main():
-    a = access_msgs()
-    b = get_sent_bodys(a)
-    c = read_sent_content(b)
-    return c
+    tokens = get_page_tokens()
+    bodies = get_sent_bodys(tokens)
+    sent_emails = read_sent_content(bodies)
+    return sent_emails
 
 #=========================
 if __name__ == '__main__':
-    print(main())
+    l = main()
+    for i in l:
+        print(i)
