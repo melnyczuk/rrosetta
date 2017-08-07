@@ -1,5 +1,4 @@
-.gitignore
-.vscode/**
-*.json
 *.indd
-__pycache__/**
+*.json
+**/__psycache__/**
+**/.vscode/**
