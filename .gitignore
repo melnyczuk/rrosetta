@@ -1,3 +1,5 @@
-.vscode/**/
+.gitignore
+.vscode/**
 *.json
 *.indd
+__pycache__/**
