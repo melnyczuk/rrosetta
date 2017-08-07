@@ -1,4 +1,3 @@
-./Private
-./.vscode
-*.json
-*.indd
+.vscode/**
+**/*.json
+**/*.indd
