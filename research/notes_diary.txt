@@ -13,4 +13,24 @@
 2017-07-04:
     --Successfully accessed the content of my email messages.
     --Orange also making zines markup project!
-    --
+    --Didn't quite translate my gmail emails that got pulled.
+
+2017-07-10:
+    --Initiated Twitter App to scrape tweets to use as training data.
+    --https://marcobonzanini.com/2015/03/02/mining-twitter-data-with-python-part-1/
+    --saved tweets to json with key=username values=tweets
+    --built crawler to maximise tweets for teaching-set
+
+2017-07-28:
+    --Got sentiment analysis to work.
+    --Works by using words surrounding nouns to judge rough opinion of noun > add these together for all instances of noun
+
+2017-08-01:
+    --Planned Zine markdown algorithm.
+    --Stores details about all scraped items in JSON and builds from that.
+
+2017-08-06:
+    --Proof of concept:
+        --Reading Gmail sent emails - but not all and not enough
+        --Getting nouns from emails - small number of emails reducing the accuracy - need to link semantics
+        --Creating JSON/s from wiki - needs to be more robust!

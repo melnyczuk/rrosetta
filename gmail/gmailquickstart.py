@@ -65,10 +65,10 @@ def main():
     if not labels:
         print('No labels found.')
     else:
-      print('Labels:')
+      print('Labels:', len(labels))
       for label in labels:
-            if label['name'] == 'sent':
-                print(label['name'])
+          if label['name'] == 'SENT':
+            print(label['name'])
 
 
 if __name__ == '__main__':

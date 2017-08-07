@@ -69,8 +69,7 @@ def save_csv(csvName, dictionary):
                 writer.writerow([t, k, v])                                      # write these as a new row in the csv file and save it;
 
 ## RUN THIS BAD BOY: GIVE IT A URL IN CMD ##
-def main():
-    siteURL = sys.argv[1]                                                       # pass in a url;
+def main(siteURL):                                                # pass in a url;
     wiki = siteURL.split('/')                                                   # parse url at /;
     wiki = wiki[2] + '_' + wiki[len(wiki)-1]                                                    # get final level domain name (aka page name);                             
     soup = get_soup(siteURL)                                                    # turn url into soup;
@@ -88,4 +87,4 @@ def main():
     save_csv(wiki, srcDict)                                         
 
 if __name__ == "__main__":
-    main()
+    main(sys.argv[1])
