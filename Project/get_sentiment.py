@@ -1,4 +1,4 @@
-import nltk, re, sys
+import nltk, re
 import process_emails as pf
 from nltk.corpus import conll2000
 
@@ -41,8 +41,10 @@ chunk = r"""
         Adj: {<DT|PP\$>?<RB.?.?>?<JJ.?>+<RB.?.?>?}
         """
 
-# GET CHUNKS FROM SENTENCES #
 def get_chunks(_sentence):
+    """
+    Get chunks from sentences
+    """
     s = nltk.tokenize.casual_tokenize(_sentence)
     s = pf.filter_list(s)
     # making it back into a sentence and parsing it again seems to greatly improve pos-tag accuracy
@@ -53,9 +55,13 @@ def get_chunks(_sentence):
     if len(s) > 0: c = nltk.RegexpParser(chunk).parse(s)
     return c
 
-# ANALYSE SENTIMENT OF CHUNKS #
-# THIS IS DONE BY CHECKING ALL ADJECTIVES, VERBS AND ADVERBS AGAINST POSITIVE AND NEGATIVE LISTS
+
 def sent_anal_chunks(_chunks):
+    """
+    Analyse Sentiment of chunks
+    This is done by checking all adjectives, verbs and adverbs
+    against lists of positive and negative words
+    """
     nounjectives = []
     nounjectives.append([[noun for c in _chunks if type(c) == nltk.tree.Tree and c.label() == 'AdjNoun' for noun, postag in c if postag == 'NN' or postag == 'NNS' or postag == 'NNP' or postag == 'NNPS'], [adj for c in _chunks if type(c) == nltk.tree.Tree and c.label() == 'AdjNoun' for adj, postag in c if postag == 'JJ' or postag == 'JJR' or postag == 'JJS']])
     noun_dict = {}
@@ -70,6 +76,12 @@ def sent_anal_chunks(_chunks):
 
 # MAKE A DICTIONARY THAT STORES NOUNS WITH THE SENTIMENT ANALYSED FROM THE CHUNKS THEY ARE IN #
 def make_sentiment_dict(_sentences):
+    """
+    Returns a dictionary 
+    that stores a noun
+    with the sentiment value
+    of the chunk that contains the noun
+    """
     _dict = {}
     for sentence in _sentences:
         t_dict = sent_anal_chunks(get_chunks(sentence))
@@ -80,6 +92,13 @@ def make_sentiment_dict(_sentences):
 
 # MAKE A DICTIONARY THAT COUNTS HOW MANY TIMES THE NOUN WAS USED #
 def count_sentiment_dict(_emails):
+    """
+    Returns a dictionary
+    containing a count of every occurance
+    and the sentiment value
+    for all nouns that is sentimentally significant
+    in a list of emails
+    """
     emails = format_emails(_emails)
     paragraphs = [nltk.sent_tokenize(email) for email in emails]
     sentences = [item for sentence in paragraphs for item in pf.filter_list(sentence)]
@@ -95,6 +114,9 @@ def count_sentiment_dict(_emails):
     return count_dict
 
 def format_emails(_emails):
+    """
+    Formats the text of the emails
+    """
     emails = []
     for email in _emails:
         email = email.decode("utf-8").lower()

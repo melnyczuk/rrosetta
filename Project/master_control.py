@@ -1,8 +1,10 @@
 import get_sentiment
-import gmailsentfolder
+import gmail_sent_folder
 import citation_json
+import txt_anal
+import img_anal
 
-sent_mail = set(gmailsentfolder.main())
+sent_mail = set(gmail_sent_folder.main())
 print("sent: ", len(sent_mail))
 noun_dict = get_sentiment.main(sent_mail)
 noun_list = []
@@ -12,3 +14,5 @@ for nouns in noun_list:
     for noun in nouns:
         if noun.isalpha():
             citation_json.main(noun, "./citation_jsons/")
+            img_anal.analyse(noun)
+            txt_anal.analyse(noun)

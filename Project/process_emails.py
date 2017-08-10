@@ -1,6 +1,5 @@
 ## THIS BUILDS A NESTED DICTIONARY OF ALL WORDS & THEIR POPULARITY GROUPED BY POS-TAG ##
-
-import sys, json, string
+import json, string
 import nltk 
 from nltk.corpus import stopwords
 
