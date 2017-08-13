@@ -1,4 +1,4 @@
-Howard Melnyczuk
+### Biography
 
 Howard Melnyczuk is an artist investigating contemporary culture through critical theory, art practice and research. His practice explores technology as a site in which contemporary political structures are both built and maintained. His work reveal alternative forms of understanding, problematise cultural norms surrounding technology, and unpack the false assumptions that re-enforce hidden operations of power and control. 
 
