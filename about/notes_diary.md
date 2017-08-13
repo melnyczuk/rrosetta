@@ -1,10 +1,11 @@
 ## ONGOING PROJECT DIARY
+---
 + 2017-06-22:  
   + Built a script to catalog all links on a webpage into a csv file. This may be used to generate content from, ie, a wikipedia page: allowing quick access to referenced sites & articles etc. Also contains all image srcs.
 ---
 + 2017-06-23:
   + Read the Gmail API terms of service: all seems fine, project seems legit; exception: 5e1-"Prohibitions on Content":"Scrape, build databases, or otherwise create permanent copies of such content, or keep cached copies longer than permitted by the cache header" may be problematic? 
-    [LINK](https://console.developers.google.com/tos?id=universal)  
+    [link](https://console.developers.google.com/tos?id=universal)  
   + If gmail used, a plus would be the level of invasion: folks may feel shocked that the work would use their email; also, could use mailing lists and spam subscriptions to get a quick insight into user interests.
 ---
 + 2017-07-03:  
@@ -18,8 +19,7 @@
   + Didn't quite translate my gmail emails that got pulled.  
 ---
 + 2017-07-10:  
-  + Initiated Twitter App to scrape tweets to use as training data.  
-  + [LINK](https://marcobonzanini.com/2015/03/02/mining-twitter-data-with-python-part-1/)  
+  + Initiated Twitter App to scrape tweets to use as training data.  [link](https://marcobonzanini.com/2015/03/02/mining-twitter-data-with-python-part-1/)  
   + saved tweets to json with key=username values=tweets  
   + built crawler to maximise tweets for teaching-set  
 ---
@@ -44,7 +44,7 @@
 + 2017-08-08:  
   + Charlotte kindly showed me how to setup a Node.js server environment. 
   + Began writing JS to format scraped content into a visual form.  
-    - At this stage, this just consists of a list of images and text. Still interesting.  
+     - At this stage, this just consists of a list of images and text. Still interesting.  
 ---
 + 2017-08-09:  
   + Sharped up decision tree for JS  
@@ -54,9 +54,9 @@
 ---
 + 2017-08-12:  
   + Implemented what I hope is the correct approach for Gmail OAuth2  
-    - Unable to check as I think I need the frontend. Not sure.  
+     - Unable to check as I think I need the frontend. Not sure.  
   + Research better methodologies for analysing emails. Will implement later in the week.  
-    - Would be great thematically if I could find a dump of leaked emails to use as training data.  
+     - Would be great thematically if I could find a dump of leaked emails to use as training data.  
 ---
 + 2017-08-13:  
   + Researched and implemented Django python server. AMAZING.  
