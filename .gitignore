@@ -2,3 +2,5 @@
 *.json
 **/__psycache__/**
 **/.vscode/**
+node_modules
+npm-debug.log
