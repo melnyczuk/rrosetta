@@ -44,7 +44,7 @@
 + 2017-08-08:  
   + Charlotte kindly showed me how to setup a Node.js server environment. 
   + Began writing JS to format scraped content into a visual form.  
-     - At this stage, this just consists of a list of images and text. Still interesting.  
+            - At this stage, this just consists of a list of images and text. Still interesting.  
 ---
 + 2017-08-09:  
   + Sharped up decision tree for JS  
@@ -54,9 +54,9 @@
 ---
 + 2017-08-12:  
   + Implemented what I hope is the correct approach for Gmail OAuth2  
-     - Unable to check as I think I need the frontend. Not sure.  
+            - Unable to check as I think I need the frontend. Not sure.  
   + Research better methodologies for analysing emails. Will implement later in the week.  
-     - Would be great thematically if I could find a dump of leaked emails to use as training data.  
+            - Would be great thematically if I could find a dump of leaked emails to use as training data.  
 ---
 + 2017-08-13:  
   + Researched and implemented Django python server. AMAZING.  
