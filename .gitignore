@@ -4,3 +4,4 @@
 **/.vscode/**
 node_modules
 npm-debug.log
+g_auth.py
