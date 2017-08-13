@@ -62,4 +62,5 @@
   + Researched and implemented Django python server. AMAZING.  
   + Made citation_json.py script run just using a url as an input.  
   + Reorganised project folders in light of this breakthrough.  
+  + Bought [Rrosetta.uk](http://Rrosetta.uk) to host site.
 ---
