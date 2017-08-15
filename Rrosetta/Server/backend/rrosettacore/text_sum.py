@@ -51,9 +51,9 @@ def from_text(_text, ):
     s += (str(sent).join(' ') for sent in sents)
     return s
 
-def main(_text, _count=COUNT, _language=LANGUAGE):
+def main(_text, _count=COUNT, _lang=LANGUAGE):
     COUNT = _count
-    LANGUAGE = _language
+    LANGUAGE = _lang
 
     s = _text
     while COUNT > 1:

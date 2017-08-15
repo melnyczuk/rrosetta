@@ -6,6 +6,7 @@ from __future__ import print_function
 import base64
 import logging
 import os
+import sys
 
 import httplib2
 from bs4 import BeautifulSoup
@@ -13,12 +14,9 @@ from bs4 import BeautifulSoup
 ## GOOGLE API MODULES ##
 from googleapiclient import discovery, errors, http
 from googleapiclient.discovery import build
-from oauth2client import client
-from oauth2client import tools
-from oauth2client.client import flow_from_clientsecrets
+from oauth2client import client, tools
+from oauth2client.client import OAuth2WebServerFlow
 from oauth2client.file import Storage
-
-from google.oauth2 import service_account
 
 #-------------------------
 #=========================
@@ -37,21 +35,30 @@ APPLICATION_NAME = 'Rrosetta'
 
 REDIRECT_URI = [
     "urn:ietf:wg:oauth:2.0:oob",
-    "http://rrosetta.uk"
+    "http://127.0.0.1:8000/backend/debug"
 ]
+
 SCOPES = [
     'https://www.googleapis.com/auth/gmail.readonly',
     'https://www.googleapis.com/auth/userinfo.email',
     'https://www.googleapis.com/auth/userinfo.profile',
 ]
 
+
 #=========================
 
 
 def get__credentials():
-    credentials = service_account.Credentials.from_service_account_file('client_secret.json')
-    return credentials.with_scopes(SCOPES)
+    flow = OAuth2WebServerFlow(
+        "240841548439-9es6t3g8qb005fm0d6bq3uh9es2a6aiu.apps.googleusercontent.com", "u6Juwv8yyssSAtbPodcrXypi", SCOPES)
+    store = Storage('cred.dat')
+    credentials = store.get()
+    if credentials is None or credentials.invalid:
+        credentials = tools.run_flow(flow, store, tools.argparser.parse_args())
+    print(credentials)
+    return credentials
 #-------------------------
+
 
 def debug():
     from google.auth.transport.urllib3 import AuthorizedHttp
@@ -63,9 +70,11 @@ def debug():
     credentials = get__credentials()
     authed_http = AuthorizedHttp(credentials)
     response = authed_http.request(
-    'GET', 'https://www.googleapis.com/storage/v1/b')
+        'GET', 'https://www.googleapis.com/storage/v1/b')
 
     return response
+#-------------------------
+
 
 def get_credentials(authorization_code, state):
     """Retrieve credentials using the provided authorization code.
@@ -119,7 +128,7 @@ def get_credentials(authorization_code, state):
 #-------------------------
 
 
-def get_authorization_url(email_address, state):
+def get_authorization_url(email_address, state=None):
     """Retrieve the authorization URL.
 
     Args:
@@ -128,7 +137,8 @@ def get_authorization_url(email_address, state):
     Returns:
     Authorization URL to redirect the user to.
     """
-    flow = flow_from_clientsecrets(CLIENTSECRETS_LOCATION, ' '.join(SCOPES))
+    flow = client.flow_from_clientsecrets(
+        CLIENTSECRETS_LOCATION, ' '.join(SCOPES))
     flow.params['access_type'] = 'offline'
     flow.params['approval_prompt'] = 'force'
     flow.params['user_id'] = email_address
@@ -187,7 +197,8 @@ def exchange_code(authorization_code):
     Raises:
     CodeExchangeException: an error occurred.
     """
-    flow = flow_from_clientsecrets(CLIENTSECRETS_LOCATION, ' '.join(SCOPES))
+    flow = client.flow_from_clientsecrets(
+        CLIENTSECRETS_LOCATION, scope=' '.join(SCOPES))
     flow.redirect_uri = REDIRECT_URI
     try:
         credentials = flow.step2_exchange(authorization_code)
@@ -196,3 +207,7 @@ def exchange_code(authorization_code):
         logging.error('An error occurred: %s', error)
         # raise CodeExchangeException(None)
 #-------------------------
+
+
+if __name__ == "__main__":
+    print(debug())

@@ -6,8 +6,9 @@ from bs4 import BeautifulSoup
 import base64
 import httplib2
 #-------------------------
-from . import g_auth as gmail
+#from . import g_auth as gmail
 #-------------------------
+
 
 def get_page_tokens(_userID, _service):
     sent_results = _service.users().messages().list(
@@ -23,11 +24,13 @@ def get_page_tokens(_userID, _service):
     return pageTokens
 #-------------------------
 
+
 def single_access_msgs(_userID, _service):
     sent_results = _service.users().messages().list(
         labelIds='SENT', userId=_userID).execute()
     return sent_results.get('messages', [])
 #-------------------------
+
 
 def get_sent_bodys(_pageTokens, _credentials, _userID, _service):
     if not _pageTokens:
@@ -71,6 +74,7 @@ def get_sent_bodys(_pageTokens, _credentials, _userID, _service):
     return bodys
 #-------------------------
 
+
 def read_sent_content(_bodys):
     print("bodies: ", len(_bodys))
     sent_emails = []
@@ -89,6 +93,7 @@ def read_sent_content(_bodys):
                     pass
     return sent_emails
 #-------------------------
+
 
 def relaxed_decode_base64(data):
     """
@@ -115,44 +120,47 @@ def relaxed_decode_base64(data):
     return base64.b64decode(data)
 #-------------------------
 
-def main(_authorization_code):
-    credentials = gmail.exchange_code(_authorization_code)
-    if credentials:
-        print('not authorised')
-    else:
-        user = gmail.get_user_info(credentials)
-        if not user:
-            print('no user')
-        else:
-            service = gmail.build_service(credentials)
 
-    if not credentials and user and service:
-        print('not authorised')
-    else:
-        tokens = get_page_tokens(user['id'], service)
-        bodies = get_sent_bodys(tokens, credentials, user['id'], service)
-        sent_emails = read_sent_content(bodies)
-        return sent_emails
+# def main(_authorization_code):
+#     credentials = gmail.exchange_code(_authorization_code)
+#     if credentials:
+#         print('not authorised')
+#     else:
+#         user = gmail.get_user_info(credentials)
+#         if not user:
+#             print('no user')
+#         else:
+#             service = gmail.build_service(credentials)
 
-def debug():
-    service = gmail.debug()
-    credentials = gmail.get__credentials()
-    if credentials:
-        print('not authorised')
-    else:
-        user = gmail.get_user_info(credentials)
-        if not user:
-            print('no user')
-        else:
-            service = gmail.build_service(credentials)
+#     if not credentials and user and service:
+#         print('not authorised')
+#     else:
+#         tokens = get_page_tokens(user['id'], service)
+#         bodies = get_sent_bodys(tokens, credentials, user['id'], service)
+#         sent_emails = read_sent_content(bodies)
+#         return sent_emails
+# #-------------------------
 
-    if not credentials and user and service:
-        print('not authorised')
-    else:
-        tokens = get_page_tokens(user['id'], service)
-        bodies = get_sent_bodys(tokens, credentials, user['id'], service)
-        sent_emails = read_sent_content(bodies)
-        return sent_emails
+
+# def debug():
+#     service = gmail.debug()
+#     credentials = gmail.get__credentials()
+#     if credentials:
+#         print('not authorised')
+#     else:
+#         user = gmail.get_user_info(credentials)
+#         if not user:
+#             print('no user')
+#         else:
+#             service = gmail.build_service(credentials)
+
+#     if not credentials and user and service:
+#         print('not authorised')
+#     else:
+#         tokens = get_page_tokens(user['id'], service)
+#         bodies = get_sent_bodys(tokens, credentials, user['id'], service)
+#         sent_emails = read_sent_content(bodies)
+#         return sent_emails
 
 
 #=========================
