@@ -1,7 +1,20 @@
-import nltk
+#PY3#HPM#
+
+# This programme takes a list of strings and produces a dictionary
+#   containing important nouns alongside a the number of times they occur,
+#   and a sentiment rating produced by analysing the adjectives, verbs and adverbs
+#   in the sentences that contain the noun.
+
+#=========================
+
 import re
-from . import process_emails as pf
+
+import nltk
 from nltk.corpus import conll2000
+
+from . import process_emails as pf
+
+#=========================
 
 ## LOAD NEGATIVE WORDS LIST/S ##
 neg_words = set()
@@ -42,9 +55,14 @@ chunk = r"""
         Adj: {<DT|PP\$>?<RB.?.?>?<JJ.?>+<RB.?.?>?}
         """
 
+#=========================
+
 
 def get_chunks(_sentence):
     """
+    Takes a String
+    Returns a List of Strings
+    --
     Get chunks from sentences
     """
     s = nltk.tokenize.casual_tokenize(_sentence)
@@ -57,10 +75,14 @@ def get_chunks(_sentence):
     if len(s) > 0:
         c = nltk.RegexpParser(chunk).parse(s)
     return c
+#-------------------------
 
 
 def sent_anal_chunks(_chunks):
     """
+    Takes a List of Strings
+    Returns a Dictionary
+    --
     Analyse Sentiment of chunks
     This is done by checking all adjectives, verbs and adverbs
     against lists of positive and negative words
@@ -79,14 +101,15 @@ def sent_anal_chunks(_chunks):
                     x -= 1
             noun_dict[noun] = x
     return noun_dict
-
-# MAKE A DICTIONARY THAT STORES NOUNS WITH THE SENTIMENT ANALYSED FROM THE CHUNKS THEY ARE IN #
+#-------------------------
 
 
 def make_sentiment_dict(_sentences):
     """
-    Returns a dictionary 
-    that stores a noun
+    Takes a List of Strings
+    Returns a Dictionary 
+    --
+    Dictionary stores a noun
     with the sentiment value
     of the chunk that contains the noun
     """
@@ -97,14 +120,15 @@ def make_sentiment_dict(_sentences):
             if len(k) > 1 and k.isalpha:
                 _dict.setdefault(k, []).append(t_dict[k])
     return _dict
-
-# MAKE A DICTIONARY THAT COUNTS HOW MANY TIMES THE NOUN WAS USED #
+#-------------------------
 
 
 def count_sentiment_dict(_emails):
     """
+    Takes a Set/List of Strings
     Returns a dictionary
-    containing a count of every occurance
+    --
+    Dictionary contains a count of every occurance
     and the sentiment value
     for all nouns that is sentimentally significant
     in a list of emails
@@ -124,19 +148,31 @@ def count_sentiment_dict(_emails):
         count_dict.setdefault(sentiment, {}).setdefault(counter, []).append(
             word)   # change to={word-counter:{setiment-rating:[nouns]}} ??
     return count_dict
+#-------------------------
 
 
 def get_links(_emails):
+    """
+    Takes a Set/List of Strings
+    Returns a List of Strings
+    --
+    Returns a list of URLs
+    from within the emails
+    """
     emails = format_emails(_emails)
     paragraphs = [nltk.sent_tokenize(email) for email in emails]
-    sentences = [item for sentence in paragraphs for item in pf.filter_list(
+    urls = [item for sentence in paragraphs for item in pf.filter_list(
         sentence, removable_conditions=["'http' in token;"])]
-    return sentences
+    return urls
+#-------------------------
 
 
 def format_emails(_emails):
     """
-    Formats the text of the emails
+    Takes a Set/List of Strings
+    Returns a List of Strings
+    --
+    Formats emails to remove unwanted characters etc.
     """
     emails = []
     for email in _emails:
@@ -145,6 +181,10 @@ def format_emails(_emails):
         email.replace('\r', " ")
         emails.append(email)
     return emails
+#-------------------------
+
+
+#=========================
 
 
 def main(_emails):

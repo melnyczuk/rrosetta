@@ -1,43 +1,54 @@
+#PY3#HPM#
+# Master file for Rrosetta programme.
+
+#=========================
+
 import sys
-import gmail_sent_folder, get_sentiment, text_sum, citation_json, txt_anal, img_anal
 
+import citation_json
+import get_sentiment
+import img_anal
+import sent_mail
+import text_sum
+import txt_anal
 
-def authorise():
-    from oauth2client import client
-    flow = client.flow_from_clientsecrets()
-    auth_uri = flow.step1_get_authorize_url()
+#=========================
+
 
 def run(_auth_code, _language='english', DEBUG=False):
+    """
+    Takes OAuth2 code, (String, Bool)
+    Saves JSON file
+    """
     sent_mail = set()
     if DEBUG:
-        sent_mail = set(gmail_sent_folder.debug())
+        sent_mail = sent_mail.debug()
     else:
-        sent_mail = set(gmail_sent_folder.main(_auth_code))
-
+        sent_mail = sent_mail.main(_auth_code)
     print("sent: ", len(sent_mail))
 
-    full_corp = ''
-    for mail in sent_mail:
-        full_corp += str(mail).join(' ')
-
-    print(len(full_corp))
-
-    sentence = [text_sum.main(full_corp, _lang=_language)]
+    # perform recursive summerisation to find single sentence.
+    sentence = [text_sum.main(sent_mail, _lang=_language)]
     print(sentence)
 
-    noun_dict = []# get_sentiment.main(sentence)
+    # perform NLTK analysis to find noun
+    noun_dict = get_sentiment.main(sentence)
     noun_list = []
     noun_list.append([nouns for sentiment in noun_dict for counter in noun_dict[sentiment]
-                    for nouns in noun_dict[sentiment][counter] if counter >= 5 and nouns.isalpha()])
+                      for nouns in noun_dict[sentiment][counter] if counter >= 0 and nouns.isalpha()])
     print(noun_list)
+
+    # perform citation scraping
     for nouns in noun_list:
         for noun in nouns:
             if noun.isalpha():
                 citation_json.main(noun, "./citation_jsons/")
-                img_anal.analyse(noun)
-                txt_anal.analyse(noun)
-    print("done")
 
+    print("done")
+#-------------------------
+
+
+#=========================
 if __name__ == "__main__":
     import sys
-    run('hi')
+    run(sys.argv[1])

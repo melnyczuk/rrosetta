@@ -1,6 +1,11 @@
+#PY3#HPM#
 ## Gmail OAuth2 Jazz ##
 # THIS CODE IS LARGELY TAKEN FROM A SCRIPT FREELY PROVIDED GOOGLE AS PART OF THEIR API DOCUMENTATION ##
-#-------------------------
+
+# Not sure if much of this is redundant now that I have implemented Django?
+
+#=========================
+
 from __future__ import print_function
 
 import base64
@@ -10,15 +15,12 @@ import sys
 
 import httplib2
 from bs4 import BeautifulSoup
-#-------------------------
-## GOOGLE API MODULES ##
 from googleapiclient import discovery, errors, http
 from googleapiclient.discovery import build
 from oauth2client import client, tools
 from oauth2client.client import OAuth2WebServerFlow
 from oauth2client.file import Storage
 
-#-------------------------
 #=========================
 
 try:
@@ -49,18 +51,28 @@ SCOPES = [
 
 
 def get__credentials():
+    """
+    Returns Credentials
+    --
+    Simplified Credential Flow
+    """
     flow = OAuth2WebServerFlow(
-        "240841548439-9es6t3g8qb005fm0d6bq3uh9es2a6aiu.apps.googleusercontent.com", "u6Juwv8yyssSAtbPodcrXypi", SCOPES)
+        "<client_id>", "<client_secret>", SCOPES)
     store = Storage('cred.dat')
     credentials = store.get()
     if credentials is None or credentials.invalid:
         credentials = tools.run_flow(flow, store, tools.argparser.parse_args())
-    print(credentials)
     return credentials
 #-------------------------
 
 
 def debug():
+    """
+    Returns Http Response
+    --
+    An attempt at
+    a simple way to see if credentials are working
+    """
     from google.auth.transport.urllib3 import AuthorizedHttp
     """Shows basic usage of the Gmail API.
 
@@ -71,12 +83,14 @@ def debug():
     authed_http = AuthorizedHttp(credentials)
     response = authed_http.request(
         'GET', 'https://www.googleapis.com/storage/v1/b')
-
     return response
 #-------------------------
 
 
 def get_credentials(authorization_code, state):
+    """
+    Taken from Google API Documentation
+    """
     """Retrieve credentials using the provided authorization code.
 
     This function exchanges the authorization code for an access token and queries
@@ -129,6 +143,9 @@ def get_credentials(authorization_code, state):
 
 
 def get_authorization_url(email_address, state=None):
+    """
+    Taken from Google API Documentation
+    """
     """Retrieve the authorization URL.
 
     Args:
@@ -148,6 +165,9 @@ def get_authorization_url(email_address, state=None):
 
 
 def build_service(credentials):
+    """
+    Taken from Google API Documentation
+    """
     """Build a Gmail service object.
 
     Args:
@@ -163,6 +183,9 @@ def build_service(credentials):
 
 
 def get_user_info(credentials):
+    """
+    Taken from Google API Documentation
+    """
     """Send a request to the UserInfo API to retrieve the user's information.
 
     Args:
@@ -187,6 +210,9 @@ def get_user_info(credentials):
 
 
 def exchange_code(authorization_code):
+    """
+    Taken from Google API Documentation
+    """
     """Exchange an authorization code for OAuth 2.0 credentials.
 
     Args:
@@ -209,5 +235,6 @@ def exchange_code(authorization_code):
 #-------------------------
 
 
+#=========================
 if __name__ == "__main__":
     print(debug())

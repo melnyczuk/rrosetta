@@ -1,29 +1,43 @@
-# PY3 ## HPM ## THIS CREATES A JSON CATALOG OF TEXT PARAGRAPHS AND IMAGES
-import requests
+#PY3#HPM#
+# This creates a JSON file containing all the images and text paragraphs
+#   from each site used as a citation reference for the relevant wikipedia page
+#   for any given noun
+
+#=========================
+
 import json
 import random
+
+import requests
 from bs4 import BeautifulSoup
 
-# MAKE A SET OF ALL CITATIONS ON A WIKI PAGE IN ORDER TO FIND ZINE CONTENT #
+import img_anal
+import txt_anal
+
+#=========================
 
 
 def citation_set(_noun):
     """
+    Takes a String
     Returns a Set 
-    containing all external citation links
+    --
+    Set contains all external citation links
     from a wikipedia page 
     most relavent to any given noun
     """
+    # take the passed noun fron the sentiment analysis and make it into a wikipedia url
     wiki = "https://en.wikipedia.org/wiki/{}".format(
-        _noun)                                                                     # take the passed noun fron the sentiment analysis and make it into a wikipedia url
+        _noun)
     # pull that wikipedia page
     soup = pull(wiki)
     # THE LOOP BELOW WILL CHECK IF THIS IS A GOOD PAGE TO USE FOR EXTERNAL CONTENT
     x = 0
     # Start a While loop to keep trying stuff
     while True:
+        # make list of all links on the page, if the links have a title and no colon
         links = [link['href'] for link in soup.find_all('a') if link.has_attr('title') and str(link).find(
-            ':') == -1]           # make list of all links on the page, if the links have a title and no colon
+            ':') == -1]
         # for all <span> tags in the soup:
         for i in soup.find_all('span'):
             # if a <span> tag has an 'id' attribute, and that 'id' attribute is 'Reference', and the page has external links, then HOORAY!
@@ -50,21 +64,28 @@ def citation_set(_noun):
                 soup = pull("https://en.m.wikipedia.org{}".format(links[x]))
                 # go back to the start
                 pass
+#-------------------------
 
 
 def pull(_url):
     """
-    Returns the BeautifulSoup for URL
+    Takes a String
+    Returns a Soup
     """
     page = requests.get(_url).content
     soup = BeautifulSoup(page, 'html.parser')
     return soup
+#-------------------------
 
 
 def catalog_url(_url):
     """
-    Returns a dictionary 
-    containing all text and images grouped as such.
+    Takes a String
+    Returns a Dictionary
+    --
+    Dictionary contains
+    all text and images 
+    grouped as such.
     """
     soup = pull(_url)
     # Seperates images and text into internal nested dictionaries of each
@@ -74,14 +95,20 @@ def catalog_url(_url):
     # Updates nested dictionary of text
     content['txt'].update(sort_all_txt(soup, _url))
     return content
+#-------------------------
 
 
 def sort_txt(_soup, _url):
     """
-    Returns a dictionary 
-    containing the text (if any) from every <p> tag in a page
+    Takes a Soup, String
+    Returns a Dictionary 
+    --
+    Dictionary contains 
+    the text (if any) 
+    from every <p> tag in a page
     """
     p_dict = {}
+    # get all text for every p tag in the soup
     paragraphs = [p for p in _soup.find_all('p')]
     for p in paragraphs:
         # Checks to see if there is any text present
@@ -93,12 +120,15 @@ def sort_txt(_soup, _url):
             }
     return p_dict
 # NEED TO SORT THIS OUT ^ THIS DOESNT TAKE ENOUGH, BUT IS IT TOO MUCH TO TAKE ALL TEXT?
+#-------------------------
 
 
 def sort_all_txt(_soup, _url):
     """
-    Returns a dictionary 
-    containing all the text on a page
+    Takes Soup, String
+    Returns a Dictionary
+    -- 
+    Dictionary contains all the text on a webpage
     """
     p_dict = {}
     paragraphs = [p.text for p in _soup.find_all('p')]
@@ -109,12 +139,16 @@ def sort_all_txt(_soup, _url):
         'text': text
     }
     return p_dict
+#-------------------------
 
 
 def sort_img(_soup, _url):
     """
-    Returns a dictionary 
-    containing all the image source urls on a page
+    Takes Soup, String
+    Returns a Dictionary
+    --
+    Dictionary contains every image
+    with as much information as possible
     """
     img_dict = {}
     imgs = [img for img in _soup.find_all('img')]
@@ -128,58 +162,71 @@ def sort_img(_soup, _url):
             'dimensions': [img['width'], img['height']]
         }
     return img_dict
+#-------------------------
 
 
-def create_dict(_set):
+def create_dict(_URLset):
     """
-    Returns a dictionary 
+    Takes a Set containing Strings
+    Returns a Dictionary 
+    --
     combing all the text and all the image dictionaries 
     for all pages marked as a 'Reference'
     on a wikipedia page
     """
     c_dict = {'img': {}, 'txt': {}}
-    for l in _set:
+    for link in _URLset:
         try:
-            print(l)
-            soup = pull(l)
-            c_dict['img'].update(sort_img(soup, l))
-            c_dict['txt'].update(sort_txt(soup, l))
+            print(link)
+            soup = pull(link)
+            c_dict['img'].update(sort_img(soup, link))
+            c_dict['txt'].update(sort_txt(soup, link))
         except:
             pass
     return c_dict
+#-------------------------
 
 
 def create_json(_dict, _name):
     """
-    Saves a JSON file from dictionary _dict with name _name
-    containing all the text and all the image dictionaries 
+    Takes Dictionary, String
+    Saves a JSON file
+    --
+    Dictionary contains
+    sub-dictionaries containing
+    all the text and all the images
     for all pages marked as a 'Reference'
     on a wikipedia page
     """
     with open("{}.json".format(_name), 'w', encoding='utf-8') as outfile:
         json.dump(_dict, outfile, skipkeys=False,
                   ensure_ascii=True, sort_keys=True)
+#-------------------------
 
 
 def main(_noun, _folder=""):
     """
-    Saves a JSON file for any passed in NOUN
-    containing all the text and all the image dictionaries 
+    takes a String (, String)
+    Saves a JSON file
+    --
+    JSON contains 
+    dictionaries containing
+    all the text and all the images
     for all pages marked as a 'Reference'
     on a wikipedia page
+    following analysis
     """
     c_set = citation_set(_noun)
     name = "./{folder}/{noun}".format(folder=_folder, noun=_noun)
     temp = create_dict(c_set)
     create_json(temp, name)
+    img_anal.analyse(_noun)
+    txt_anal.analyse(_noun)
+#-------------------------
 
 
 #=========================
 if __name__ == "__main__":
     import sys
-    import img_anal
-    import txt_anal
     noun = sys.argv[1]
     main(noun, "citation_jsons")
-    img_anal.analyse(noun)
-    txt_anal.analyse(noun)
