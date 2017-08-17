@@ -11,8 +11,8 @@ import random
 import requests
 from bs4 import BeautifulSoup
 
-import img_anal
-import txt_anal
+#import img_anal
+#import txt_anal
 
 #=========================
 
@@ -220,8 +220,8 @@ def main(_noun, _folder=""):
     name = "./{folder}/{noun}".format(folder=_folder, noun=_noun)
     temp = create_dict(c_set)
     create_json(temp, name)
-    img_anal.analyse(_noun)
-    txt_anal.analyse(_noun)
+    #img_anal.analyse(_noun)
+    #txt_anal.analyse(_noun)
 #-------------------------
 
 

@@ -44,6 +44,10 @@ INSTALLED_APPS = [
 ]
 
 GOOGLE_OAUTH2_CLIENT_SECRETS_JSON = "C:/Users/HPM/Downloads/client_secret_2.json"
+GOOGLE_OAUTH_CLIENT_SECRET = "KwwSIjYjFagjPac9-9buPSEJ"
+GOOGLE_OAUTH_CLIENT_ID = "240841548439-806a8ge6r5d1li7tqe4g8f0iocg5ihnf.apps.googleusercontent.com"
+GOOGLE_OAUTH_SCOPE = "https://www.googleapis.com/auth/gmail.readonly"
+GOOGLE_OAUTH_REDIRECT_URI = "http://127.0.0.1:8000/backend/callback"
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -57,10 +61,26 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'server.urls'
 
+# TEMPLATES = [
+#     {
+#         'BACKEND': 'django.template.backends.django.DjangoTemplates',
+#         'DIRS': [],
+#         'APP_DIRS': True,
+#         'OPTIONS': {
+#             'context_processors': [
+#                 'django.template.context_processors.debug',
+#                 'django.template.context_processors.request',
+#                 'django.contrib.auth.context_processors.auth',
+#                 'django.contrib.messages.context_processors.messages',
+#             ],
+#         },
+#     },
+# ]
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -68,10 +88,14 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'social_django.context_processors.backends',
+                'social_django.context_processors.login_redirect',
             ],
         },
     },
 ]
+
+
 
 WSGI_APPLICATION = 'server.wsgi.application'
 

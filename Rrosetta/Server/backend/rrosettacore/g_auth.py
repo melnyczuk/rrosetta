@@ -31,13 +31,13 @@ except ImportError:
 
 # If modifying these scopes, delete your previously saved credentials
 # at ~/.credentials/gmail-python-quickstart.json
-CLIENT_SECRET_FILE = 'client_secret.json'
-CLIENTSECRETS_LOCATION = 'C:/Users/HPM/.credential/'
+CLIENT_SECRET_FILE = 'client_secret_240841548439-806a8ge6r5d1li7tqe4g8f0iocg5ihnf.apps.googleusercontent.com.json'
+CLIENTSECRETS_LOCATION = 'C:/Users/HPM/Downloads/client_secret_240841548439-806a8ge6r5d1li7tqe4g8f0iocg5ihnf.apps.googleusercontent.com.json'
 APPLICATION_NAME = 'Rrosetta'
 
 REDIRECT_URI = [
     "urn:ietf:wg:oauth:2.0:oob",
-    "http://127.0.0.1:8000/backend/debug"
+    "http://127.0.0.1:8000/backend/gmail"
 ]
 
 SCOPES = [
@@ -57,7 +57,7 @@ def get__credentials():
     Simplified Credential Flow
     """
     flow = OAuth2WebServerFlow(
-        "<client_id>", "<client_secret>", SCOPES)
+        "LL3QtyCsAFGzaAKWKl3ay01wKJIUFd07BytHSpJKo2F4LExik32qFUdJC2mE7Lkd", "KwwSIjYjFagjPac9-9buPSEJ", SCOPES)
     store = Storage('cred.dat')
     credentials = store.get()
     if credentials is None or credentials.invalid:
@@ -82,7 +82,7 @@ def debug():
     credentials = get__credentials()
     authed_http = AuthorizedHttp(credentials)
     response = authed_http.request(
-        'GET', 'https://www.googleapis.com/storage/v1/b')
+        'POST', 'https://www.googleapis.com/storage/v1/b')
     return response
 #-------------------------
 
@@ -177,7 +177,7 @@ def build_service(credentials):
     Gmail service object.
     """
     http = httplib2.Http()
-    http = credentials.authorize(http)
+    #http = credentials.authorize(http)
     return build('gmail', 'v1', http=http)
 #-------------------------
 
@@ -194,11 +194,12 @@ def get_user_info(credentials):
     Returns:
     User information as a dict.
     """
-    user_info_service = build(
-        serviceName='oauth2', version='v2', http=credentials.authorize(httplib2.Http()))
+    _service = build(
+        serviceName='gmail', version='v1', http=httplib2.Http())
     user_info = None
     try:
-        user_info = user_info_service.user_info().get().execute()
+        print(type(_service))
+        return _service
     except errors.HttpError as e:
         logging.error('An error occurred: %s', e)
     if user_info and user_info.get('id'):

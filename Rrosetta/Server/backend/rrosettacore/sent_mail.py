@@ -12,7 +12,7 @@ import httplib2
 from bs4 import BeautifulSoup
 
 #-------------------------
-# from . import g_auth as gmail ## TURNED OF FOR DJANGO DEBUGGING
+import g_auth as gmail ## TURNED OF FOR DJANGO DEBUGGING
 
 #=========================
 
@@ -162,28 +162,28 @@ def relaxed_decode_base64(data):
     return base64.b64decode(data)
 #-------------------------
 
-# TURNED OF FOR DJANGO DEBUGGING
-# def main(_authorization_code):
-#     """
-#     """
-#     credentials = gmail.exchange_code(_authorization_code)
-#     if credentials:
-#         print('not authorised')
-#     else:
-#         user = gmail.get_user_info(credentials)
-#         if not user:
-#             print('no user')
-#         else:
-#             service = gmail.build_service(credentials)
+#TURNED OFF FOR DJANGO DEBUGGING
+def main(_authorization_code):
+    """
+    """
+    credentials = gmail.exchange_code(_authorization_code)
+    if credentials:
+        print('not authorised')
+    else:
+        user = gmail.get_user_info(credentials)
+        if not user:
+            print('no user')
+        else:
+            service = gmail.build_service(credentials)
 
-#     if not credentials and user and service:
-#         print('not authorised')
-#     else:
-#         tokens = get_page_tokens(user['id'], service)
-#         bodies = get_sent_bodys(tokens, credentials, user['id'], service)
-#         sent_emails = read_sent_content(bodies)
-#         return sent_emails
-# #-------------------------
+    if not credentials and user and service:
+        print('not authorised')
+    else:
+        tokens = get_page_tokens(user['id'], service)
+        bodies = get_sent_bodys(tokens, credentials, user['id'], service)
+        sent_emails = read_sent_content(bodies)
+        return sent_emails
+#-------------------------
 
 # TURNED OF FOR DJANGO DEBUGGING
 # def debug():
@@ -214,6 +214,6 @@ def relaxed_decode_base64(data):
 
 if __name__ == '__main__':
     auth_code = ''
-    l = main(auth_code)
+    l = main("LL3QtyCsAFGzaAKWKl3ay01wKJIUFd07BytHSpJKo2F4LExik32qFUdJC2mE7Lkd")
     for i in l:
         print(i)
