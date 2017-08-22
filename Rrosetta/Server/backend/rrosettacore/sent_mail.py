@@ -11,13 +11,10 @@ import base64
 import httplib2
 from bs4 import BeautifulSoup
 
-#-------------------------
-import g_auth as gmail ## TURNED OF FOR DJANGO DEBUGGING
-
 #=========================
 
 
-def get_page_tokens(_userID, _service):
+def get_page_tokens(_service):
     """
     Takes Int, OAuth2 Service
     Returns Int
@@ -27,20 +24,20 @@ def get_page_tokens(_userID, _service):
     for any given UserID
     """
     sent_results = _service.users().messages().list(
-        labelIds='SENT', userId=_userID).execute()
+        labelIds='SENT', userId='me').execute()
     newPT = sent_results.get('nextPageToken')
     pageTokens = set()
     pageTokens.add(newPT)
     while newPT != None:
         sent_results = _service.users().messages().list(
-            labelIds='SENT', userId=_userID, pageToken=newPT).execute()
+            labelIds='SENT', userId='me', pageToken=newPT).execute()
         newPT = sent_results.get('nextPageToken')
         pageTokens.add(newPT)
     return pageTokens
 #-------------------------
 
 
-def single_access_msgs(_userID, _service):
+def single_access_msgs(_service):
     """
     Takes Int, OAuth2 Service
     Returns Gmail Object
@@ -49,12 +46,12 @@ def single_access_msgs(_userID, _service):
     of sent emails for any UserID
     """
     sent_results = _service.users().messages().list(
-        labelIds='SENT', userId=_userID).execute()
+        labelIds='SENT', userId='me').execute()
     return sent_results.get('messages', [])
 #-------------------------
 
 
-def get_sent_bodys(_pageTokens, _credentials, _userID, _service):
+def get_sent_msgs(_pageTokens, _credentials, _service):
     """
     Takes Int, OAuth2 Credential, Int, OAuth2 Service
     Returns List of Strings
@@ -64,45 +61,59 @@ def get_sent_bodys(_pageTokens, _credentials, _userID, _service):
     pull each page of sent emails,
     collect in list
     """
-    if not _pageTokens:
+    if not _pageTokens or _pageTokens == None:
         print('no pages')
-        sentMSGs = single_access_msgs(_userID, _service)
+        sentMSGs = single_access_msgs(_service)
     else:
+        print('Pages: ', len(_pageTokens))
         sentMSGs = []
         for token in _pageTokens:
             sent_results = _service.users().messages().list(
-                labelIds='SENT', userId=_userID, pageToken=token).execute()
+                labelIds='SENT', userId='me', pageToken=token).execute()
             sentMSGs.append(sent_results.get('messages', []))
+    return sentMSGs
+#-------------------------
 
-    if not sentMSGs:
+
+def get_sent_ids(_sentMSGs, _credentials, _service):
+    if not _sentMSGs:
         print('no sent messages')
     else:
-        print('Pages: ', len(_pageTokens))
         sentIDs = []
-        for page in sentMSGs:
+        for i, page in enumerate(_sentMSGs):
+            print('Page: ', i, ' MSGs: ', len(page))
             for MSG in page:
                 sentIDs.append(MSG['id'])
+        return sentIDs
+#-------------------------
 
-    if not sentIDs:
+
+def get_sent_contents(_sentIDs, _credentials, _service):
+    if not _sentIDs:
         print('no sent IDs')
     else:
-        print("IDs: ", len(sentIDs))
+        print("IDs: ", len(_sentIDs))
         sentContents = []
-        for sentID in sentIDs:
+        for i, sentID in enumerate(_sentIDs):
             sentContents.append(_service.users().messages().get(
-                userId=_userID, id=sentID).execute())
+                userId='me', id=sentID).execute())
+            if i % 100 == 0: print(i)
+        return sentContents
+#-------------------------
 
-    if not sentContents:
+
+def get_sent_bodys(_sentContents, _credentials, _service):
+    if not _sentContents:
         print('no sent msg content')
     else:
-        print("contents: ", len(sentContents))
+        print("contents: ", len(_sentContents))
         bodys = []
-        for sentContent in sentContents:
+        for sentContent in _sentContents:
             if 'body' not in sentContent['payload'].keys():
                 pass
             else:
                 bodys.append(sentContent['payload']['body'])
-    return bodys
+        return bodys
 #-------------------------
 
 
@@ -115,7 +126,6 @@ def read_sent_content(_bodys):
     into UTF-8 encoded strings
     collected in a list of sent emails
     """
-    print("bodies: ", len(_bodys))
     sent_emails = set()
     if not _bodys:
         print('no MSG bodies')
@@ -125,9 +135,11 @@ def read_sent_content(_bodys):
             if 'data' not in body.keys():
                 pass
             else:
+                email = ''
                 try:
-                    sent_emails.add(
-                        str(relaxed_decode_base64(body['data'])).encode('utf-8'))
+                    email = relaxed_decode_base64(
+                        body['data'])  # .decode('utf-8')
+                    sent_emails.add(email)
                 except:
                     pass
     return sent_emails
@@ -162,58 +174,18 @@ def relaxed_decode_base64(data):
     return base64.b64decode(data)
 #-------------------------
 
-#TURNED OFF FOR DJANGO DEBUGGING
-def main(_authorization_code):
-    """
-    """
-    credentials = gmail.exchange_code(_authorization_code)
-    if credentials:
-        print('not authorised')
-    else:
-        user = gmail.get_user_info(credentials)
-        if not user:
-            print('no user')
-        else:
-            service = gmail.build_service(credentials)
 
-    if not credentials and user and service:
+def main(_credentials, _service):
+    """
+    Takes OAuth2 Credentials, OAuth2 Service
+    Returns List of Bytes-string
+    """
+
+    if not _credentials and not _service:
         print('not authorised')
     else:
-        tokens = get_page_tokens(user['id'], service)
-        bodies = get_sent_bodys(tokens, credentials, user['id'], service)
+        tokens = get_page_tokens(_service)
+        bodies = get_sent_bodys(tokens, _credentials, _service)
         sent_emails = read_sent_content(bodies)
         return sent_emails
 #-------------------------
-
-# TURNED OF FOR DJANGO DEBUGGING
-# def debug():
-#     """
-#     """
-#     service = gmail.debug()
-#     credentials = gmail.get__credentials()
-#     if credentials:
-#         print('not authorised')
-#     else:
-#         user = gmail.get_user_info(credentials)
-#         if not user:
-#             print('no user')
-#         else:
-#             service = gmail.build_service(credentials)
-
-
-#     if not credentials and user and service:
-#         print('not authorised')
-#     else:
-#         tokens = get_page_tokens(user['id'], service)
-#         bodies = get_sent_bodys(tokens, credentials, user['id'], service)
-#         sent_emails = read_sent_content(bodies)
-#         return sent_emails
-# #-------------------------
-
-#=========================
-
-if __name__ == '__main__':
-    auth_code = ''
-    l = main("LL3QtyCsAFGzaAKWKl3ay01wKJIUFd07BytHSpJKo2F4LExik32qFUdJC2mE7Lkd")
-    for i in l:
-        print(i)

@@ -17,40 +17,29 @@ from sumy.utils import get_stop_words
 #=========================
 
 LANGUAGE = 'english'
-COUNT = 32                  # No. of recursions
+COUNT = 12                 # No. of recursions
 
 #=========================
 
 
-def from_url(_url):
+def from_url(_url, _count=COUNT, _lang=LANGUAGE):
     """
     Takes a String
-    Returns a String
+    Returns a List of Sentence Objects
     --
     Gives a summerising sentence
     of all the text
     on any given webpage
     """
-    parser = HtmlParser.from_url(_url, Tokenizer(LANGUAGE))
-
-    stemmer = Stemmer(LANGUAGE)
-
+    parser = HtmlParser.from_url(_url, Tokenizer(_lang))
+    stemmer = Stemmer(_lang)
     summarizer = Summarizer(stemmer)
-    summarizer.stop_words = get_stop_words(LANGUAGE)
-
-    sents = []
-    for sentence in summarizer(parser.document, COUNT):
-        sents.append(sentence)
-
-    s = ''
-    for sent in sents:
-        s += (str(sent) + ' ')
-
-    return s
+    summarizer.stop_words = get_stop_words(_lang)
+    return summarizer(parser.document, _count)
 #-------------------------
 
 
-def from_set(_set):
+def from_set(_set, _count=COUNT, _lang=LANGUAGE):
     """
     Takes a Set of Strings
     Returns a String
@@ -61,33 +50,26 @@ def from_set(_set):
     """
     text = ''
     for item in _set:
-        text += str(item).join(' ')
-    return from_text(text)
+        text += str(item)
+        text += ' '
+    return from_text(text, _count=_count, _lang=_lang)
 #-------------------------
 
 
-def from_text(_text):
+def from_text(_text, _count=COUNT, _lang=LANGUAGE):
     """
     Takes a String
-    Returns a String
+    Returns a List of Sentence Objects
     --
     Gives a summerising sentence
     for any given string of text
     """
-    parser = PlaintextParser.from_string(_text, Tokenizer(LANGUAGE))
-
-    stemmer = Stemmer(LANGUAGE)
-
+    parser = PlaintextParser.from_string(_text, Tokenizer(_lang))
+    stemmer = Stemmer(_lang)
     summarizer = Summarizer(stemmer)
-    summarizer.stop_words = get_stop_words(LANGUAGE)
+    summarizer.stop_words = get_stop_words(_lang)
+    return summarizer(parser.document, _count)
 
-    sents = []
-    for sentence in summarizer(parser.document, COUNT):
-        sents.append(sentence)
-
-    s = ''
-    s += (str(sent).join(' ') for sent in sents)
-    return s
 #-------------------------
 
 
@@ -102,15 +84,15 @@ def summerise(_set, _count=COUNT, _lang=LANGUAGE):
     recursively to improve accuracy,
     recurring a specified of times
     """
-    COUNT = _count
-    LANGUAGE = _lang
-
     ouroboros = 2**COUNT
 
-    s = _set
-    while ouroboros > 1:
+    s = from_set(_set, _count=ouroboros, _lang=_lang)
+    while ouroboros > 4:
         ouroboros /= 2
-        s = from_set(s)
+        s = from_set(s, _count=ouroboros, _lang=_lang)
+    print(s)
+    for i in s:
+        i = str(i)
     return s
 #-------------------------
 

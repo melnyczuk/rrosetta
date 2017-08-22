@@ -50,7 +50,7 @@ def get_img(_src):
 #-------------------------
 
 
-def analyse(_json):
+def analyse(_dict):
     """
 	Takes a String
 	Saves a JSON
@@ -59,8 +59,7 @@ def analyse(_json):
 	from JSON file,
 	the updates JSON
 	"""
-    path = "citation_jsons/{}.json".format(_json)
-    d = pull_json(path)
+    d = _dict
     for k in d['img']:
         src = d['img'][k]['src']
         img = get_img(src)
@@ -70,7 +69,7 @@ def analyse(_json):
             pass
         # if d['img'][k]['dimensions'][0] < 1 or d['img'][k]['dimensions'][1] < 1:
         #	d['img'][k] = False
-    update_json(path, d)
+    return d
 #-------------------------
 
 

@@ -29,10 +29,10 @@ with open("backend/rrosettacore/bin/positive-words.txt", 'r') as posfile:
         pos_words.add(line.replace('\n', ''))
 
 # ALTER FORMATTING CONDITIONS
-pf.conditions_list.remove("token not in stopwords.words('english')")
+#pf.conditions_list.remove("token not in stopwords.words('english')")
 
 # DEFINE CHUNK GRAMMAR RULES
-chunk = r"""
+hunk = """
         AdjNoun: {<DT|PP\$>?<RB.?.?>?<JJ.?>+<RB.?.?>?<NN.?|PRP.?><PRP.?>?}
         AdjNoun: {<DT|PP\$>?<RB.?.?>?<JJ.?>+<RB.?.?>?<PRP.?>?<NN.?|PRP.?>}
         NounAdj: {<DT|PP\$>?<PRP.?>?<NN.?|PRP.?><RB.?.?>?<JJ.?>+<RB.?.?>?}
@@ -49,11 +49,13 @@ chunk = r"""
         
         VerbAdv: {<VB.?>+<RB.?.?>+}
         AdvVerb: {<RB.?.?>+<VB.?>+}
+        """
 
+chunk = r"""
         Noun: {<DT|PP\$>?<NN.?|PRP.?>+}
-
         Adj: {<DT|PP\$>?<RB.?.?>?<JJ.?>+<RB.?.?>?}
         """
+
 
 #=========================
 
@@ -88,8 +90,10 @@ def sent_anal_chunks(_chunks):
     against lists of positive and negative words
     """
     nounjectives = []
-    nounjectives.append([[noun for c in _chunks if type(c) == nltk.tree.Tree and c.label() == 'AdjNoun' for noun, postag in c if postag == 'NN' or postag == 'NNS' or postag == 'NNP' or postag == 'NNPS'], [
-                        adj for c in _chunks if type(c) == nltk.tree.Tree and c.label() == 'AdjNoun' for adj, postag in c if postag == 'JJ' or postag == 'JJR' or postag == 'JJS']])
+    nounjectives.append([
+        [noun for c in _chunks if type(c) == nltk.tree.Tree for noun, postag in c if postag == r'<NN.?|PRP.?>+'], 
+        [adj for c in _chunks if type(c) == nltk.tree.Tree for adj, postag in c if postag == r'<RB.?.?>?<JJ.?>+<RB.?.?>?']
+    ])   
     noun_dict = {}
     for a, b in nounjectives:
         for noun in a:
@@ -101,6 +105,21 @@ def sent_anal_chunks(_chunks):
                     x -= 1
             noun_dict[noun] = x
     return noun_dict
+#-------------------------
+
+
+def get_nouns(_chunks):
+    #return [noun for c in _chunks if type(c) == nltk.tree.Tree for noun, postag in c if len(noun) > 0 and postag == r'<NN.?|PRP.?>+']
+    nouns = []
+    for c in _chunks:
+        if type(c) == nltk.tree.Tree:
+            for noun, postag in c:
+                nouns.append((noun, postag))
+                # if postag == 'NN' or postag == 'NNP' or postag == 'NNS':
+                #     if str(noun).isalpha():
+                #         print("noun: ", noun)
+                #         nouns.append(noun)
+    return nouns
 #-------------------------
 
 
@@ -119,11 +138,12 @@ def make_sentiment_dict(_sentences):
         for k in t_dict.keys():
             if len(k) > 1 and k.isalpha:
                 _dict.setdefault(k, []).append(t_dict[k])
+    print('msd: ', _dict)
     return _dict
 #-------------------------
 
 
-def count_sentiment_dict(_emails):
+def count_sentiment(_emails):
     """
     Takes a Set/List of Strings
     Returns a dictionary
@@ -133,8 +153,8 @@ def count_sentiment_dict(_emails):
     for all nouns that is sentimentally significant
     in a list of emails
     """
-    emails = format_emails(_emails)
-    paragraphs = [nltk.sent_tokenize(email) for email in emails]
+    #emails = format_emails(_emails)
+    paragraphs = [nltk.sent_tokenize(email) for email in _emails]
     sentences = [
         item for sentence in paragraphs for item in pf.filter_list(sentence)]
     sentiment_dict = make_sentiment_dict(sentences)
@@ -147,6 +167,7 @@ def count_sentiment_dict(_emails):
             counter += 1
         count_dict.setdefault(sentiment, {}).setdefault(counter, []).append(
             word)   # change to={word-counter:{setiment-rating:[nouns]}} ??
+    print('cs: ', count_dict)
     return count_dict
 #-------------------------
 
@@ -176,16 +197,11 @@ def format_emails(_emails):
     """
     emails = []
     for email in _emails:
-        email = email.decode("utf-8").lower()
-        email.replace('\n', " ")
-        email.replace('\r', " ")
+        email = str(email.decode("utf-8", 'ignore')).lower()
+        email.replace(r'(\\[a-z])+', " ")   # removes escape characters
+        email.replace(r'\d', " ")           # removes digits
+        email.replace(r'<.*>', " ")         # removes html tags
+        email.replace(r'{.*}', " ")         # removes JSON
         emails.append(email)
     return emails
 #-------------------------
-
-
-#=========================
-
-
-def main(_emails):
-    return count_sentiment_dict(_emails)
