@@ -4,8 +4,8 @@ import string
 
 import requests
 from bs4 import BeautifulSoup
-from . import googl
 
+from . import googl
 from . import txt_anal
 from . import img_anal
 
@@ -102,10 +102,7 @@ def sort_img(_soup, _url):
         key = 'img_' + str(int(random.random() * 10**10))
         img_dict[key] = {
             'origin': _url,
-            'src': img['src'],
-            'alt': img['alt'],
-            'title': img['title'],
-            #'dimensions': [img['width'], img['height']]
+            'src': img['src']
         }
     return img_dict
 #-------------------------
@@ -120,15 +117,26 @@ def create_dict(_URLset):
     for all pages marked as a 'Reference'
     on a wikipedia page
     """
-    c_dict = {'img': {}, 'txt': {}}
+    c_dict = {'urls': set(), 'img': {}, 'txt': {}}
     for link in _URLset:
-        print("c_d: ", link)
-        try:
-            soup = pull(link)
+        print("url: ", link)
+        try:   
+            soup = pull(link)         
             c_dict['img'].update(sort_img(soup, link))
             c_dict['txt'].update(sort_txt(soup, link))
+            c_dict['urls'].add(link)
             print('yes')
         except:
+            print('retry')
+            try: soup = pull(link) 
+            except: pass 
+            try: c_dict['img'].update(sort_img(soup, link))
+            except: pass
+            try: c_dict['txt'].update(sort_txt(soup, link))
+            except: pass
+            c_dict['urls'].add(link)
+            print('yes')
+        else:
             print('no')
             pass
         print()
@@ -140,18 +148,15 @@ def create_json(_dict, _name):
     """
     Takes Dictionary, String
     Saves a JSON file
-    --
-    Dictionary contains
-    sub-dictionaries containing
-    all the text and all the images
-    for all pages marked as a 'Reference'
-    on a wikipedia page
     """
     with open("{}.json".format(_name), 'w', encoding='utf-8') as outfile:
         json.dump(_dict, outfile, skipkeys=False,
-                  ensure_ascii=True, sort_keys=True)
+                  ensure_ascii=True, default=makepass(), sort_keys=True)
 #-------------------------
 
+def makepass():
+    pass
+#-------------------------
 
 def google_search(_sentence):
     """
@@ -167,6 +172,7 @@ def google_search(_sentence):
     soup = pull(search_url)
     urls = set()
     for link in soup.find_all('h3', {'class': 'r'}):
+        if link.find('a')['href'] != None and link.find('a')['href'].partition("/url?q=")[2] != None and link.find('a')['href'].partition("/url?q=")[2].partition("&sa=")[0] != None:
             urls.add(link.find('a')['href'].partition("/url?q=")[2].partition("&sa=")[0])
     return urls
 
@@ -179,7 +185,8 @@ def from_list(_list, _limit=None):
         l = from_string(str(sentence))
         for url in l:
             print("urls: ", url)
-            urls.append(url)
+            if url[-3:] != 'pdf':
+                urls.append(url)
         print()
     return urls
 #-------------------------
@@ -193,17 +200,15 @@ def from_string(_sentence):
 #-------------------------
 
 
-def main(_urls):
-    urls = from_list(_urls)
-    # print('urls: ', urls)
-    # print()
-    temp = create_dict(urls)
-    # print('dict: ', temp)
-    # print()
-    temp = txt_anal.analyse(temp)
-    # print('analysed: ', temp)
-    # print()
-    create_json(temp, 'test')
+def main(_sentences, _name):
+    urls = from_list(_sentences)
+    _dict = create_dict(urls)
+    _dict = txt_anal.analyse(_dict)
+    _dict = img_anal.analyse(_dict)
+    _dict['user'] = _name
+    _dict['sentences'] = _sentences
+    create_json(_dict, _name)
+    print("json done")
 #-------------------------
 
 

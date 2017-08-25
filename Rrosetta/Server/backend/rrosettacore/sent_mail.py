@@ -14,6 +14,7 @@ from bs4 import BeautifulSoup
 #=========================
 
 
+
 def get_page_tokens(_service):
     """
     Takes Int, OAuth2 Service
@@ -171,7 +172,7 @@ def relaxed_decode_base64(data):
         data += '='
 
     # Actually perform the Base64 decode.
-    return base64.b64decode(data)
+    return base64.urlsafe_b64decode(data)
 #-------------------------
 
 

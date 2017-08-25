@@ -1,12 +1,16 @@
 #PY3#HPM#
 # This script analyses all the images catalogued in a JSON file
-
 #=========================
 
 import json
 import urllib.request as urllib
-import cv2
+from io import BytesIO
+
 import numpy as np
+from PIL import Image
+import requests
+
+import cv2
 
 #=========================
 
@@ -32,7 +36,7 @@ def update_json(_filepath, _dict):
 #-------------------------
 
 
-def get_img(_src):
+def get_cv(_src):
     """
 	Takes a String
     Returns a CV2 Image
@@ -44,9 +48,44 @@ def get_img(_src):
     try:
         url_response = urllib.urlopen(_src)
         img_array = np.array(bytearray(url_response.read()), dtype=np.uint8)
-        return cv2.imdecode(img_array, -1)
+        img = cv2.imread()
+        return img
     except:
         pass
+#-------------------------
+
+
+def get_pil(_src):
+    try:
+        resp = requests.get(_src)
+        image = Image.open(BytesIO(resp.content))
+        return image
+    except:
+        pass
+#-------------------------
+
+
+def format_dict(_dict):
+    x = 0
+    d = {}
+    d['txt'] = _dict['txt']
+    d['urls'] = _dict['urls']
+    d['img'] = {}
+    print(len(_dict['img'].keys()))
+    for k in _dict['img']:
+        if 'dimensions' in _dict['img'][k].keys() and _dict['img'][k]['dimensions'][0] > 1 and _dict['img'][k]['dimensions'][1] > 1:
+            d['img'][k] = _dict['img'][k]
+    print(len(d['img'].keys()))
+    for k in d['img']:
+        if d['img'][k]['dimensions'][0] / d['img'][k]['dimensions'][1] == 1:
+            d['img'][k]['square'] = True
+        else: d['img'][k]['square'] = False
+        if d['img'][k]['dimensions'][0] > 100 and d['img'][k]['dimensions'][1] > 100 and d['img'][k]['format'] == 'JPEG':
+            d['img'][k]['photo'] = True
+            x += 1
+            print(x)
+        else: d['img'][k]['photo'] = False
+    return d
 #-------------------------
 
 
@@ -62,20 +101,21 @@ def analyse(_dict):
     d = _dict
     for k in d['img']:
         src = d['img'][k]['src']
-        img = get_img(src)
+        img = get_pil(src)
         try:
-            d['img'][k]['dimensions'] = img.shape
+            d['img'][k]['dimensions'] = img.size
+            d['img'][k]['format'] = img.format
+            d['img'][k]['mode'] = img.mode
         except:
             pass
-        # if d['img'][k]['dimensions'][0] < 1 or d['img'][k]['dimensions'][1] < 1:
-        #	d['img'][k] = False
+    d = format_dict(d)
     return d
 #-------------------------
-
 
 #=========================
 
 
 if __name__ == '__main__':
-    import sys
-    analyse(sys.argv[1])
+    d = pull_json("../../test.json")
+    d = analyse(d)
+    update_json("./test.json", d)

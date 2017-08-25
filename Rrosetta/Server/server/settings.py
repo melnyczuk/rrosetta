@@ -46,7 +46,10 @@ INSTALLED_APPS = [
 GOOGLE_OAUTH2_CLIENT_SECRETS_JSON = "C:/Users/HPM/Downloads/client_secret_2.json"
 GOOGLE_OAUTH_CLIENT_SECRET = "KwwSIjYjFagjPac9-9buPSEJ"
 GOOGLE_OAUTH_CLIENT_ID = "240841548439-806a8ge6r5d1li7tqe4g8f0iocg5ihnf.apps.googleusercontent.com"
-GOOGLE_OAUTH_SCOPE = "https://www.googleapis.com/auth/gmail.readonly"
+GOOGLE_OAUTH_SCOPE = ["https://www.googleapis.com/auth/gmail.readonly",
+"https://www.googleapis.com/auth/gmail.modify",
+"https://www.googleapis.com/auth/gmail.compose",
+"https://www.googleapis.com/auth/gmail.send"]
 GOOGLE_OAUTH_REDIRECT_URI = "http://127.0.0.1:8000/backend/callback"
 
 MIDDLEWARE = [
