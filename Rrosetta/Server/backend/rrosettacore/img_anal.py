@@ -91,12 +91,11 @@ def format_dict(_dict):
 
 def analyse(_dict):
     """
-	Takes a String
-	Saves a JSON
+	Takes a Dictionary
+    Returns a dictionary
 	--
 	Perform analysis
-	from JSON file,
-	the updates JSON
+    on a dictionary
 	"""
     d = _dict
     for k in d['img']:

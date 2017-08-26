@@ -151,7 +151,7 @@ def create_json(_dict, _name):
     """
     with open("{}.json".format(_name), 'w', encoding='utf-8') as outfile:
         json.dump(_dict, outfile, skipkeys=False,
-                  ensure_ascii=True, default=makepass(), sort_keys=True)
+                  ensure_ascii=False, default=makepass(), sort_keys=True)
 #-------------------------
 
 def makepass():
@@ -181,8 +181,8 @@ def google_search(_sentence):
 
 def from_list(_list, _limit=None):
     urls = []
-    for sentence in _list:  # .partition(': ')[2]
-        l = from_string(str(sentence))
+    for item in _list:  # .partition(': ')[2]
+        l = from_string(str(item))
         for url in l:
             print("urls: ", url)
             if url[-3:] != 'pdf':
@@ -193,20 +193,24 @@ def from_list(_list, _limit=None):
 
 
 def from_string(_sentence):
-    sentence = "".join(x for x in _sentence if x not in string.punctuation)
-    print("sentence from list: ", sentence)
-    search_results = google_search(sentence)
+    #sentence = "".join(x for x in _sentence if x not in string.punctuation)
+    print("sentence from list: ", _sentence)
+    search_results = google_search(_sentence)
     return search_results
 #-------------------------
 
 
 def main(_sentences, _name):
-    urls = from_list(_sentences)
+    sentences = []
+    for sentence in _sentences:
+        sentences.append("".join(s for s in str(sentence) if s not in string.punctuation))
+    urls = from_list(sentences)
     _dict = create_dict(urls)
     _dict = txt_anal.analyse(_dict)
     _dict = img_anal.analyse(_dict)
     _dict['user'] = _name
-    _dict['sentences'] = _sentences
+    _dict['sentences'] = sentences
+    _dict['urls'] = list(_dict['urls'])
     create_json(_dict, _name)
     print("json done")
 #-------------------------
@@ -214,4 +218,4 @@ def main(_sentences, _name):
 
 if __name__ == "__main__":
     sentence = 'the quick brown fox jumped over the lazy dog'
-    main(sentence)
+    main(sentence, "test")

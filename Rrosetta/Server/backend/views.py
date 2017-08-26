@@ -40,6 +40,7 @@ class GmailCallbackView(TemplateView):
         from .rrosettacore import text_sum
         from .rrosettacore import json_maker
         from .rrosettacore import send_email
+        from .rrosettacore import pdf_maker
 
         """Finalise authentication process and retrieve emails."""
         # Finalise authentication
@@ -58,11 +59,10 @@ class GmailCallbackView(TemplateView):
         sent_mail = s.read_sent_content(bodies)
         #--
         formatted_emails = format_emails(sent_mail)
-        sentence = text_sum.summerise(formatted_emails, _count=15)
-        name = str(int(random.random() * (10**10)))
-        json_maker.main(sentence, name)
+        sentence = text_sum.summerise(formatted_emails, _count=12)
+        json_maker.main(sentence, user['emailAddress'])
         #--
-        # pdf_maker.make(user['emailAddress'])
+        pdf_maker.make(user['emailAddress'])
         #--
         # if user["messagesTotal"] > 100:
         #     user_message = str("Hi, Rrosetta has finished analysing your sent emails, and crafting the content of you unique zine. Please collect this from the Rrosetta space, upstairs in the St James Hatcham Building. Did you know you have {} emails in you account? If you would like to learn more about Rrosetta, please visit http://melnycz.uk. Rrosetta would like to thanks you for your cooperation. Getting to know you has been a very stimulating experience.").format(user["messagesTotal"])

@@ -59,8 +59,55 @@
             - Would be great thematically if I could find a dump of leaked emails to use as training data.  
 ---
 + 2017-08-13:  
-  + Researched and implemented Django python server. AMAZING.  
+  + Researched and implemented Django python server. AMAZING. 
+    + [This youtube playlist was great.](https://www.youtube.com/playlist?list=PL6gx4Cwl9DGBlmzzFcLgDhKTTfNLfX1IK) 
   + Made citation_json.py script run just using a url as an input.  
   + Reorganised project folders in light of this breakthrough.  
   + Bought [Rrosetta.uk](http://Rrosetta.uk) to host site.
+  + Download the Podesta emails from Wikileaks dump. Can use for training?
+---
++ 2017-08-14:
+  + Hit major hurdle: OAuth2 is not making any sense.
+---
++ 2017-08-15:
+  + Still no luck
+  + May have to switch to Twitter data, which will suck!
+  + Zero help from the department.
+---
++ 2017-08-17:
+  + Skyped with Fabio Natali from CCS and he talked me through using Django to make OAuth2 work! GLORIOUS VICTORY.
+  + Implementing recursive Text Sumarisation using Sumy module.
+    + This returns a sentence rather than a single word. Will use NLTK to pull out object noun.
+---
++ 2017-08-18:
+  + Found the perfect chair!
+  + Ran programme on my emails and returned a very personal sentence. It works!
+  + Tested on my mum's emails.
+---
++ 2017-08-21:
+  + Trying to get the object noun out of the sentence with NLTK is very inaccurate. 
+  + So decided to swap out wikipedia for google searching instead.
+    + Found the PWS module, which does a great job or formulating the Google search.
+    + Carefully cut out Google tracking bits from url as these kept recognising I'm a bot and blocking me.
+  + Results are a lot better, returned a page of Charlotte's Tumblr themes from a search of her sentence.
+---
++ 2017-08-22:
+  + Tightening up search, bit hit and miss.
+  + Decided to start search four sentences rather than one to make it more robust. Works a lot better.
+  + PWS decided to break, so I had to go into the module code and fix it myself. Saved my working patch as the googl module.
+---
++ 2017-08-23:
+  + Decided not to use JS to layout and export PDFs.
+  + Instead I am going to use Reportlab for python, which looks like a great module.
+    + [Watched this video.](https://www.youtube.com/watch?v=Ei0fL6j8DtI)
+---
++ 2017-08-24:
+  + Strengthened image analysis, adding PIL functionality to record dimensions and filetype and colour mode of images.
+    + Now removes images that aren't actually there, and 1x1 pixel images that are used to track clicks for advertisers.
+    + Added a flag in the image is square: probably a thumnail or logo.
+    + Added a flag that assumes the image is a photo if it is bigger than certain dimensions.
+---
++ 2017-08-25:
+  + Strengthened JSON creation
+    + Now passes the user email, the sentences used in Google search, and the list of urls that were scraped - this will form the credits page of the zine.
 ---
