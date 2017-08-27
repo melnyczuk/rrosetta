@@ -125,4 +125,9 @@
     + Works with attachment emails
     + Correctly decodes everything.
   + Got super accurate results on my own emails.
+  + Todo: 
+    1.. make pdfmaker into class
+    2.. make pdf page borders
+    3.. make credit spread
+    4.. do other spreads
 ---
