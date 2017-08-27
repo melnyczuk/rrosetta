@@ -50,10 +50,10 @@ class GmailCallbackView(TemplateView):
         service = discovery.build('gmail', 'v1', http=http)
         #--
         user = service.users().getProfile(userId='me').execute()
-        print('user: ', user['emailAddress'])
+        print("user: ", user['emailAddress'])
         #--
         tokens = s.get_page_tokens(service)
-        print('Pages: ', len(tokens))
+        print("Pages: ", len(tokens))
         msgs = s.get_sent_msgs(tokens, service)
         ids = s.get_sent_ids(msgs)
         print("IDs: ", len(ids))
@@ -65,11 +65,12 @@ class GmailCallbackView(TemplateView):
         print("decoded: ", len(sent_mail))
         #--
         formatted_emails = format_emails(sent_mail)
-        print("formatted: ", formatted_emails)
+        print("formatted: ", len(formatted_emails))
         sentence = text_sum.summerise(formatted_emails, _count=12)
         d = collect_content.scrape(sentence, user['emailAddress'])
+        print("urls: ", len(d['urls']), "img: ", len(d['img'].keys()), "txt: ", len(d['txt'].keys()))
         #--
-        pdf_maker.make(user['emailAddress'])
+        pdf_maker.make(d)
         #--
         # if user["messagesTotal"] > 100:
         #     user_message = str("Hi, Rrosetta has finished analysing your sent emails, and crafting the content of you unique zine. Please collect this from the Rrosetta space, upstairs in the St James Hatcham Building. Did you know you have {} emails in you account? If you would like to learn more about Rrosetta, please visit http://melnycz.uk. Rrosetta would like to thanks you for your cooperation. Getting to know you has been a very stimulating experience.").format(user["messagesTotal"])

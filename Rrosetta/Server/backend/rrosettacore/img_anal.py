@@ -17,9 +17,9 @@ import cv2
 
 def pull_json(_filepath):
     """
-	Takes a String
-	Returns a Dictionary
-	"""
+        Takes a String
+        Returns a Dictionary
+        """
     with open(_filepath, 'r', encoding='utf-8') as infile:
         return json.load(infile)
 #-------------------------
@@ -27,9 +27,9 @@ def pull_json(_filepath):
 
 def update_json(_filepath, _dict):
     """
-	Takes a String and a Dictionary
-	Saves a JSON file
-	"""
+        Takes a String and a Dictionary
+        Saves a JSON file
+        """
     with open(_filepath, 'w', encoding='utf-8') as outfile:
         json.dump(_dict, outfile, skipkeys=False,
                   ensure_ascii=True, sort_keys=True)
@@ -38,11 +38,11 @@ def update_json(_filepath, _dict):
 
 def get_cv(_src):
     """
-	Takes a String
+        Takes a String
     Returns a CV2 Image
-	--
+        --
     Gets OpenCV image
-	from a source url
+        from a source url
     credit: (https://prateekvjoshi.com/2016/03/01/how-to-read-an-image-from-a-url-in-opencv-python/)
     """
     try:
@@ -66,37 +66,37 @@ def get_pil(_src):
 
 
 def format_dict(_dict):
-    x = 0
     d = {}
     d['txt'] = _dict['txt']
     d['urls'] = _dict['urls']
     d['img'] = {}
-    print(len(_dict['img'].keys()))
     for k in _dict['img']:
+        # remove duds
         if 'dimensions' in _dict['img'][k].keys() and _dict['img'][k]['dimensions'][0] > 1 and _dict['img'][k]['dimensions'][1] > 1:
             d['img'][k] = _dict['img'][k]
-    print(len(d['img'].keys()))
     for k in d['img']:
+        # find square images (probably icons)
         if d['img'][k]['dimensions'][0] / d['img'][k]['dimensions'][1] == 1:
             d['img'][k]['square'] = True
-        else: d['img'][k]['square'] = False
+        else:
+            d['img'][k]['square'] = False
+        # find big images (probably photos/useful)
         if d['img'][k]['dimensions'][0] > 100 and d['img'][k]['dimensions'][1] > 100 and d['img'][k]['format'] == 'JPEG':
             d['img'][k]['photo'] = True
-            x += 1
-            print(x)
-        else: d['img'][k]['photo'] = False
+        else:
+            d['img'][k]['photo'] = False
     return d
 #-------------------------
 
 
 def analyse(_dict):
     """
-	Takes a Dictionary
+        Takes a Dictionary
     Returns a dictionary
-	--
-	Perform analysis
+        --
+        Perform analysis
     on a dictionary
-	"""
+        """
     d = _dict
     for k in d['img']:
         src = d['img'][k]['src']

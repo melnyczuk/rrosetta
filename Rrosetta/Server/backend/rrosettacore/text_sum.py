@@ -68,7 +68,7 @@ def from_text(_text, _count=COUNT, _lang=LANGUAGE):
     stemmer = Stemmer(_lang)
     summarizer = Summarizer(stemmer)
     summarizer.stop_words = get_stop_words(_lang)
-    return summarizer(parser.document, _count)
+    return set(summarizer(parser.document, _count))
 
 #-------------------------
 

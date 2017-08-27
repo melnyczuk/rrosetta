@@ -9,7 +9,7 @@ from reportlab.graphics.shapes import Image
 from reportlab.platypus import SimpleDocTemplate, Flowable, ImageAndFlowables
 import json
 
-# Should I make the pdf A5 then print it two pages to A4 at print stage, or make it A4?
+# Make this a class?
 PAGE_W, PAGE_H = A5
 PRINT_H, PRINT_W = A4
 
@@ -24,12 +24,7 @@ def pull_json(_filepath):
 #-------------------------
 
 
-def gen_page(_canvas):
-    _canvas.showPage()
-#-------------------------
-
-
-def cover_page(_canvas, _name, _img):
+def cover_spread(_canvas, _name, _img):
     img_w, img_h = _img.getSize()
     _canvas.drawImage(_img, (A4[1] - A5[0]) / 2, 0, width=A5[0],height=A5[1], mask=None, preserveAspectRatio=True)
     _canvas.setFillColorRGB(1.0, 1.0, 1.0)
@@ -38,15 +33,27 @@ def cover_page(_canvas, _name, _img):
     _canvas.showPage()
 #-------------------------
 
+def first_spread(_canvas, _photos, _texts):
+    
+    _canvas.showPage()
+#-------------------------
 
-def credit_page(_canvas):
+def second_spread(_canvas, _photos, _texts):
+    
+    _canvas.showPage()
+#-------------------------
+
+def third_spread(_canvas, _photos, _texts):
+    
     _canvas.showPage()
 #-------------------------
 
 
-def back_page(_canvas):
+def credit_spread(_canvas):
+    
     _canvas.showPage()
 #-------------------------
+
 
 
 def pull_photos(_dict):
@@ -89,6 +96,8 @@ def make(_dict):
     photos = pull_photos(_dict)
     img = get_big_img(photos)
     
+    cover_page(c, _dict['user'], img)
+
     c.save()
 #-------------------------
 
@@ -101,4 +110,5 @@ def write_buf_pdf(_buf):
 
 if __name__ == "__main__":
     import sys
-    make("h.melnyczuk@gmail.com")
+    d = pull_json(sys.argv[1])
+    make(d)

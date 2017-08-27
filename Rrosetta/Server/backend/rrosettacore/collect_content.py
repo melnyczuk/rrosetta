@@ -97,7 +97,6 @@ def sort_img(_soup, _url):
     """
     img_dict = {}
     imgs = [img for img in _soup.find_all('img')]
-    print(len(imgs))
     for img in imgs:
         key = 'img_' + str(int(random.random() * 10**10))
         img_dict[key] = {
@@ -119,15 +118,12 @@ def create_dict(_URLset):
     """
     c_dict = {'urls': set(), 'img': {}, 'txt': {}}
     for link in _URLset:
-        print("url: ", link)
         try:   
             soup = pull(link)         
             c_dict['img'].update(sort_img(soup, link))
             c_dict['txt'].update(sort_txt(soup, link))
             c_dict['urls'].add(link)
-            print('yes')
         except:
-            print('retry')
             try: soup = pull(link) 
             except: pass 
             try: c_dict['img'].update(sort_img(soup, link))
@@ -135,11 +131,8 @@ def create_dict(_URLset):
             try: c_dict['txt'].update(sort_txt(soup, link))
             except: pass
             c_dict['urls'].add(link)
-            print('yes')
         else:
-            print('no')
             pass
-        print()
     return c_dict
 #-------------------------
 
@@ -183,10 +176,8 @@ def from_list(_list, _limit=None):
     for item in _list:  # .partition(': ')[2]
         l = from_string(str(item))
         for url in l:
-            print("urls: ", url)
             if url[-3:] != 'pdf':
                 urls.append(url)
-        print()
     return urls
 #-------------------------
 
