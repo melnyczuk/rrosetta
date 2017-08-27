@@ -150,8 +150,7 @@ def create_json(_dict, _name):
     Saves a JSON file
     """
     with open("{}.json".format(_name), 'w', encoding='utf-8') as outfile:
-        json.dump(_dict, outfile, skipkeys=False,
-                  ensure_ascii=False, default=makepass(), sort_keys=True)
+        json.dump(_dict, outfile, skipkeys=False, ensure_ascii=False, sort_keys=True)
 #-------------------------
 
 def makepass():
@@ -200,22 +199,17 @@ def from_string(_sentence):
 #-------------------------
 
 
-def main(_sentences, _name):
+def scrape(_sentences, _name):
     sentences = []
     for sentence in _sentences:
         sentences.append("".join(s for s in str(sentence) if s not in string.punctuation))
     urls = from_list(sentences)
-    _dict = create_dict(urls)
-    _dict = txt_anal.analyse(_dict)
-    _dict = img_anal.analyse(_dict)
-    _dict['user'] = _name
-    _dict['sentences'] = sentences
-    _dict['urls'] = list(_dict['urls'])
-    create_json(_dict, _name)
-    print("json done")
+    d = create_dict(urls)
+    d = txt_anal.analyse(d)
+    d = img_anal.analyse(d)
+    d['user'] = _name
+    d['sentences'] = sentences
+    d['urls'] = list(d['urls'])
+    create_json(d, _name)
+    return d
 #-------------------------
-
-
-if __name__ == "__main__":
-    sentence = 'the quick brown fox jumped over the lazy dog'
-    main(sentence, "test")

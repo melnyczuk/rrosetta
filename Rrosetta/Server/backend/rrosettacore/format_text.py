@@ -16,15 +16,16 @@ def format_emails(_emails):
     """
     emails = []
     for email in _emails:
-        email = str(email.decode("utf-8", 'ignore')).lower()
+        email = str(email.decode('UTF-8', 'ignore')).lower()
         email.replace(r'(\\[a-z])+', " ")   # removes escape characters
         email.replace(r'\d', " ")           # removes digits
         email.replace(r'<.*>', " ")         # removes html tags
         email.replace(r'{.*}', " ")         # removes JSON
+        email = email.partition('>')[0]     # removes email reply thread
         emails.append(email)
     return emails
 #-------------------------
-        
+
     
 
 

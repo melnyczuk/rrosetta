@@ -52,7 +52,7 @@ def single_access_msgs(_service):
 #-------------------------
 
 
-def get_sent_msgs(_pageTokens, _credentials, _service):
+def get_sent_msgs(_pageTokens, _service):
     """
     Takes Int, OAuth2 Credential, Int, OAuth2 Service
     Returns List of Strings
@@ -66,7 +66,6 @@ def get_sent_msgs(_pageTokens, _credentials, _service):
         print('no pages')
         sentMSGs = single_access_msgs(_service)
     else:
-        print('Pages: ', len(_pageTokens))
         sentMSGs = []
         for token in _pageTokens:
             sent_results = _service.users().messages().list(
@@ -76,7 +75,7 @@ def get_sent_msgs(_pageTokens, _credentials, _service):
 #-------------------------
 
 
-def get_sent_ids(_sentMSGs, _credentials, _service):
+def get_sent_ids(_sentMSGs):
     if not _sentMSGs:
         print('no sent messages')
     else:
@@ -89,31 +88,33 @@ def get_sent_ids(_sentMSGs, _credentials, _service):
 #-------------------------
 
 
-def get_sent_contents(_sentIDs, _credentials, _service):
+def get_sent_contents(_sentIDs, _service):
     if not _sentIDs:
         print('no sent IDs')
     else:
-        print("IDs: ", len(_sentIDs))
         sentContents = []
         for i, sentID in enumerate(_sentIDs):
             sentContents.append(_service.users().messages().get(
-                userId='me', id=sentID).execute())
+                userId='me', id=sentID, format='full').execute())
             if i % 100 == 0: print(i)
         return sentContents
 #-------------------------
 
 
-def get_sent_bodys(_sentContents, _credentials, _service):
+def get_sent_bodys(_sentContents):
     if not _sentContents:
         print('no sent msg content')
     else:
-        print("contents: ", len(_sentContents))
         bodys = []
         for sentContent in _sentContents:
             if 'body' not in sentContent['payload'].keys():
                 pass
             else:
-                bodys.append(sentContent['payload']['body'])
+                # Pulls email bodys, even if email has attachment
+                if sentContent['payload']['body']['size'] != 0:
+                    bodys.append(sentContent['payload']['body'])
+                elif 'parts' in sentContent['payload'].keys():
+                    bodys.append(sentContent['payload']['parts'][0]['body'])
         return bodys
 #-------------------------
 
@@ -131,15 +132,15 @@ def read_sent_content(_bodys):
     if not _bodys:
         print('no MSG bodies')
     else:
-        data64s = []
         for body in _bodys:
             if 'data' not in body.keys():
                 pass
             else:
                 email = ''
                 try:
-                    email = relaxed_decode_base64(
-                        body['data'])  # .decode('utf-8')
+                    #email = base64.urlsafe_b64decode(body['raw'].encode('ASCII'))
+                    #email = base64.urlsafe_b64decode(body['data'].encode('UTF-8'))
+                    email = relaxed_decode_base64(body['data'])
                     sent_emails.add(email)
                 except:
                     pass

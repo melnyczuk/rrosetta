@@ -38,7 +38,7 @@ class GmailCallbackView(TemplateView):
         from .rrosettacore import sent_mail as s
         from .rrosettacore.format_text import format_emails
         from .rrosettacore import text_sum
-        from .rrosettacore import json_maker
+        from .rrosettacore import collect_content
         from .rrosettacore import send_email
         from .rrosettacore import pdf_maker
 
@@ -50,17 +50,24 @@ class GmailCallbackView(TemplateView):
         service = discovery.build('gmail', 'v1', http=http)
         #--
         user = service.users().getProfile(userId='me').execute()
+        print('user: ', user['emailAddress'])
         #--
         tokens = s.get_page_tokens(service)
-        msgs = s.get_sent_msgs(tokens, credentials, service)
-        ids = s.get_sent_ids(msgs, credentials, service)
-        contents = s.get_sent_contents(ids, credentials, service)
-        bodies = s.get_sent_bodys(contents, credentials, service)
+        print('Pages: ', len(tokens))
+        msgs = s.get_sent_msgs(tokens, service)
+        ids = s.get_sent_ids(msgs)
+        print("IDs: ", len(ids))
+        contents = s.get_sent_contents(ids, service)
+        print("contents: ", len(contents))
+        bodies = s.get_sent_bodys(contents)
+        print("bodies: ", len(bodies))
         sent_mail = s.read_sent_content(bodies)
+        print("decoded: ", len(sent_mail))
         #--
         formatted_emails = format_emails(sent_mail)
+        print("formatted: ", formatted_emails)
         sentence = text_sum.summerise(formatted_emails, _count=12)
-        json_maker.main(sentence, user['emailAddress'])
+        d = collect_content.scrape(sentence, user['emailAddress'])
         #--
         pdf_maker.make(user['emailAddress'])
         #--

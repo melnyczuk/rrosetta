@@ -7,9 +7,9 @@ from reportlab.lib.pagesizes import A4, A5, landscape
 from reportlab.lib.utils import ImageReader
 from reportlab.graphics.shapes import Image
 from reportlab.platypus import SimpleDocTemplate, Flowable, ImageAndFlowables
-from img_anal import get_pil
 import json
 
+# Should I make the pdf A5 then print it two pages to A4 at print stage, or make it A4?
 PAGE_W, PAGE_H = A5
 PRINT_H, PRINT_W = A4
 
@@ -29,7 +29,12 @@ def gen_page(_canvas):
 #-------------------------
 
 
-def front_page(_canvas):
+def cover_page(_canvas, _name, _img):
+    img_w, img_h = _img.getSize()
+    _canvas.drawImage(_img, (A4[1] - A5[0]) / 2, 0, width=A5[0],height=A5[1], mask=None, preserveAspectRatio=True)
+    _canvas.setFillColorRGB(1.0, 1.0, 1.0)
+    _canvas.setFont('Helvetica', img_w / 40, leading=None)
+    _canvas.drawCentredString(PRINT_W / 2, PRINT_H / 2, _name.upper())
     _canvas.showPage()
 #-------------------------
 
@@ -47,46 +52,43 @@ def back_page(_canvas):
 def pull_photos(_dict):
     photos = {}
     for k in _dict['img']:
-         if _dict['img'][k]['photo'] == True:
-             photos = _dict['img']
+        if _dict['img'][k]['photo'] == True:
+            photos[k] = _dict['img'][k]
     return photos
 #-------------------------
+
 
 def get_big_img(_photos):
     x = ''
     w = 0
     h = 0
+    # Find biggest image.
     for k in _photos:
         if _photos[k]['dimensions'][1] > h:
             h = _photos[k]['dimensions'][1]
             x = k
         elif _photos[k]['dimensions'][0] > w:
-            w = _photos[k]['dimensions'][0]  
-            x = k 
-    try: 
+            w = _photos[k]['dimensions'][0]
+            x = k
+    # If the image can't be pulled, remove it form the dictionary and try again with the next biggest
+    try:
         return ImageReader(_photos[x]['src'])
     except:
         _photos.pop(x)
         return get_big_img(_photos)
-    # If the image can't be pulled, remove it form the dictionary and try again with the next biggest
+#-------------------------
 
 
-def make(_name):
-    path = "./{}.json".format(_name)
-    d = pull_json(path)
-    photos = pull_photos(d)
-    pdffilename = "{}.pdf".format(_name)
+def make(_dict):
+    # path = "./{}.json".format(_name)
+    # d = pull_json(path)
+    pdffilename = "{}.pdf".format(_dict['user'])
     zine = SimpleDocTemplate(pdffilename)
     c = Canvas(pdffilename, pagesize=landscape(A4))
-    
-    img = get_big_img(photos)
-    img_w, img_h = img.getSize()
 
-    c.drawImage(img, (A4[1]-A5[0])/2, 0, width=A5[0], height=A5[1], mask=None, preserveAspectRatio=True)
-    c.setFillColorRGB(1.0, 1.0, 1.0)
-    c.setFont('Helvetica', img_w/40, leading = None)
-    c.drawCentredString(PRINT_W/2, PRINT_H/2, str(d['user']).upper())
-    c.showPage()
+    photos = pull_photos(_dict)
+    img = get_big_img(photos)
+    
     c.save()
 #-------------------------
 
@@ -95,6 +97,7 @@ def write_buf_pdf(_buf):
     with open('test.pdf', 'w') as fd:
         fd.write(_buf.getvalue())
 #-------------------------
+
 
 if __name__ == "__main__":
     import sys

@@ -85,14 +85,11 @@ def summerise(_set, _count=COUNT, _lang=LANGUAGE):
     recurring a specified of times
     """
     ouroboros = 2**COUNT
-
     s = from_set(_set, _count=ouroboros, _lang=_lang)
     while ouroboros > 4:
         ouroboros /= 2
+        print(ouroboros)
         s = from_set(s, _count=ouroboros, _lang=_lang)
-    print(s)
-    for i in s:
-        i = str(i)
     return s
 #-------------------------
 

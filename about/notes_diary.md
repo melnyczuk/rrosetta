@@ -111,3 +111,18 @@
   + Strengthened JSON creation
     + Now passes the user email, the sentences used in Google search, and the list of urls that were scraped - this will form the credits page of the zine.
 ---
++ 2017-08-26:
+  + Successfully ran programme all the way to saving the first page of pdf!
+  + Thought about ML implementations:
+    + To sort pulled text, and remove header/footer/junk content
+    + To determine photos correctly.
+  + Tried on James' emails from work Gmail - failed:
+    + All sent emails have attachments (signature logo), so are 'multipart'
+    + Should implement a check for multipart emails by seeing if body.size == 0
+---
++ 2017-08-27:
+  + Drastically improved email pulls:
+    + Works with attachment emails
+    + Correctly decodes everything.
+  + Got super accurate results on my own emails.
+---
