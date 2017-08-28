@@ -5,8 +5,6 @@
 
 #=========================
 
-import csv
-
 from sumy.nlp.stemmers import Stemmer
 from sumy.nlp.tokenizers import Tokenizer
 from sumy.parsers.html import HtmlParser
@@ -73,7 +71,7 @@ def from_text(_text, _count=COUNT, _lang=LANGUAGE):
 #-------------------------
 
 
-def summerise(_set, _count=COUNT, _lang=LANGUAGE):
+def summerise(_set, _lang, _count=COUNT):
     """
     Takes Set/List, (Int, String)
     Returns String
@@ -85,12 +83,13 @@ def summerise(_set, _count=COUNT, _lang=LANGUAGE):
     recurring a specified of times
     """
     ouroboros = 2**COUNT
+    print(ouroboros)
     s = from_set(_set, _count=ouroboros, _lang=_lang)
     while ouroboros > 4:
         ouroboros /= 2
         print(ouroboros)
         s = from_set(s, _count=ouroboros, _lang=_lang)
-    return s
+    return list(s)
 #-------------------------
 
 

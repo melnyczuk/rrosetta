@@ -15,27 +15,6 @@ import cv2
 #=========================
 
 
-def pull_json(_filepath):
-    """
-        Takes a String
-        Returns a Dictionary
-        """
-    with open(_filepath, 'r', encoding='utf-8') as infile:
-        return json.load(infile)
-#-------------------------
-
-
-def update_json(_filepath, _dict):
-    """
-        Takes a String and a Dictionary
-        Saves a JSON file
-        """
-    with open(_filepath, 'w', encoding='utf-8') as outfile:
-        json.dump(_dict, outfile, skipkeys=False,
-                  ensure_ascii=True, sort_keys=True)
-#-------------------------
-
-
 def get_cv(_src):
     """
         Takes a String
@@ -67,54 +46,42 @@ def get_pil(_src):
 
 def format_dict(_dict):
     d = {}
-    d['txt'] = _dict['txt']
-    d['urls'] = _dict['urls']
-    d['img'] = {}
-    for k in _dict['img']:
+
+    for k in _dict:
         # remove duds
-        if 'dimensions' in _dict['img'][k].keys() and _dict['img'][k]['dimensions'][0] > 1 and _dict['img'][k]['dimensions'][1] > 1:
-            d['img'][k] = _dict['img'][k]
-    for k in d['img']:
+        if 'dimensions' in _dict[k].keys() and _dict[k]['dimensions'][0] > 1 and _dict[k]['dimensions'][1] > 1:
+            d[k] = _dict[k]
+
+    for k in d:
         # find square images (probably icons)
-        if d['img'][k]['dimensions'][0] / d['img'][k]['dimensions'][1] == 1:
-            d['img'][k]['square'] = True
+        if d[k]['dimensions'][0] / d[k]['dimensions'][1] == 1:
+            d[k]['square'] = True
         else:
-            d['img'][k]['square'] = False
+            d[k]['square'] = False
         # find big images (probably photos/useful)
-        if d['img'][k]['dimensions'][0] > 100 and d['img'][k]['dimensions'][1] > 100 and d['img'][k]['format'] == 'JPEG':
-            d['img'][k]['photo'] = True
+        if d[k]['dimensions'][0] > 100 and d[k]['dimensions'][1] > 100 and d[k]['format'] == 'JPEG':
+            d[k]['photo'] = True
         else:
-            d['img'][k]['photo'] = False
+            d[k]['photo'] = False
     return d
 #-------------------------
 
 
 def analyse(_dict):
     """
-        Takes a Dictionary
+    Takes a Dictionary
     Returns a dictionary
-        --
-        Perform analysis
+    --
+    Perform analysis
     on a dictionary
-        """
-    d = _dict
-    for k in d['img']:
-        src = d['img'][k]['src']
-        img = get_pil(src)
+    """
+    for k in _dict:
+        img = get_pil(_dict[k]['src'])
         try:
-            d['img'][k]['dimensions'] = img.size
-            d['img'][k]['format'] = img.format
-            d['img'][k]['mode'] = img.mode
+            _dict[k]['dimensions'] = img.size
+            _dict[k]['format'] = img.format
+            _dict[k]['mode'] = img.mode
         except:
             pass
-    d = format_dict(d)
-    return d
+    return format_dict(_dict)
 #-------------------------
-
-#=========================
-
-
-if __name__ == '__main__':
-    d = pull_json("../../test.json")
-    d = analyse(d)
-    update_json("./test.json", d)

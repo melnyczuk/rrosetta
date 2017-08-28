@@ -105,3 +105,13 @@ def CreateMessageWithAttachment(sender, to, subject, message_text, file_dir,
     message.attach(msg)
 
     return {'raw': base64.urlsafe_b64encode(message.as_string())}
+
+
+        # if user["messagesTotal"] > 100:
+        #     user_message = str("Hi, Rrosetta has finished analysing your sent emails, and crafting the content of you unique zine. Please collect this from the Rrosetta space, upstairs in the St James Hatcham Building. Did you know you have {} emails in you account? If you would like to learn more about Rrosetta, please visit http://melnycz.uk. Rrosetta would like to thanks you for your cooperation. Getting to know you has been a very stimulating experience.").format(user["messagesTotal"])
+        # else:
+        #     user_message = str("Hi, Rrosetta has finished analysing your sent emails, and crafting the content of you unique zine. Please collect this from the Rrosetta space, upstairs in the St James Hatcham Building. Did you know you have {} emails in your account? This isnt very many. As a result, your zine is probably worthless. Did you really think you could trick Rrosetta with some fake account? If you would like to learn more about Rrosetta, please visit http://melnycz.uk.").format(user["messagesTotal"]).encode("rfc2822")
+        # completion_email = send_email.CreateMessage(user['emailAddress'], user['emailAddress'], 'Your personalised zine is ready for you', str('hey').encode('ascii'))
+        # hm_email = send_email.CreateMessage(user['emailAddress'], 'h.melnyczuk@gmail.com', "Rrosetta: {}".format(user['emailAddress']), "")
+        # send_email.SendMessage(service, 'me', completion_email)
+        # send_email.SendMessage(service, 'me', hm_email)
