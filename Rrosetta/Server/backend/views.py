@@ -43,7 +43,7 @@ class GmailCallbackView(TemplateView):
         from .rrosettacore import text_sum
         from .rrosettacore import collect_content
         from .rrosettacore import send_email
-        from .rrosettacore import pdf_maker
+        #from .rrosettacore import pdf_maker
 
         """Finalise authentication process and retrieve emails."""
         # Finalise authentication
@@ -72,13 +72,13 @@ class GmailCallbackView(TemplateView):
         #--
         formatted_emails = format_emails(sent_mail)
         #print(user, "formatted: ", len(formatted_emails))
-        d['sentences'] = text_sum.summerise(formatted_emails, d['language'], _count=12)
+        d['sentences'] = text_sum.summerise(formatted_emails, d['language'], _count=15)
         #print(user, d['sentences'])
         d = collect_content.scrape(d)
-        #collect_content.create_json(d, d['user'])
+        collect_content.create_json(d, d['user'])
         print(user, "urls: ", len(d['urls']), "img: ", len(d['img'].keys()), "txt: ", len(d['txt'].keys()))
         #--
-        pdf_maker.make(d)
+        #pdf_maker.make(d)
         #--
         # send_email
         #--

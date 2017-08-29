@@ -134,12 +134,16 @@ def google_search(_sentence):
         str(_sentence), num='10', start='0', recent=None, country_code=None)
     soup = pull(search_url)
     urls = set()
-    for link in soup.find_all('h3', {'class': 'r'}):
-        if link and link.find('a')['href'] != None and link.find('a')['href'].partition("/url?q=")[2] != None and link.find('a')['href'].partition("/url?q=")[2].partition("&sa=")[0] != None:
-            urls.add(link.find('a')['href'].partition(
-                "/url?q=")[2].partition("&sa=")[0])
-        else:
-            pass
+    for heads in soup.find_all('h3', {'class': 'r'}):
+        for head in heads:
+            if head.name == 'a' and head.has_attr('href'): 
+                link = head['href']
+                if link != None and link.partition("/url?q=")[2] != None and link.partition("/url?q=")[2].partition("&sa=")[0] != None:
+                    urls.add(link.partition("/url?q=")[2].partition("&sa=")[0])
+                else:
+                    pass
+            else:
+                pass
     return urls
 #-------------------------
 

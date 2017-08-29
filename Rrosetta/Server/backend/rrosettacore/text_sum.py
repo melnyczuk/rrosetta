@@ -14,13 +14,13 @@ from sumy.utils import get_stop_words
 
 #=========================
 
-LANGUAGE = 'english'
-COUNT = 12                 # No. of recursions
+# LANGUAGE = 'english'
+# COUNT = 12                 # No. of recursions
 
 #=========================
 
 
-def from_url(_url, _count=COUNT, _lang=LANGUAGE):
+def from_url(_url, _lang, _count):
     """
     Takes a String
     Returns a List of Sentence Objects
@@ -37,7 +37,7 @@ def from_url(_url, _count=COUNT, _lang=LANGUAGE):
 #-------------------------
 
 
-def from_set(_set, _count=COUNT, _lang=LANGUAGE):
+def from_set(_set, _lang, _count):
     """
     Takes a Set of Strings
     Returns a String
@@ -50,11 +50,11 @@ def from_set(_set, _count=COUNT, _lang=LANGUAGE):
     for item in _set:
         text += str(item)
         text += ' '
-    return from_text(text, _count=_count, _lang=_lang)
+    return from_text(text, _lang, _count)
 #-------------------------
 
 
-def from_text(_text, _count=COUNT, _lang=LANGUAGE):
+def from_text(_text, _lang, _count):
     """
     Takes a String
     Returns a List of Sentence Objects
@@ -71,7 +71,7 @@ def from_text(_text, _count=COUNT, _lang=LANGUAGE):
 #-------------------------
 
 
-def summerise(_set, _lang, _count=COUNT):
+def summerise(_set, _lang, _count):
     """
     Takes Set/List, (Int, String)
     Returns String
@@ -82,25 +82,10 @@ def summerise(_set, _lang, _count=COUNT):
     recursively to improve accuracy,
     recurring a specified of times
     """
-    ouroboros = 2**COUNT
-    print(ouroboros)
+    ouroboros = 2**_count
     s = from_set(_set, _count=ouroboros, _lang=_lang)
     while ouroboros > 4:
         ouroboros /= 2
-        print(ouroboros)
         s = from_set(s, _count=ouroboros, _lang=_lang)
     return list(s)
 #-------------------------
-
-
-#=========================
-if __name__ == "__main__":
-    import sys
-    url = sys.argv[1]
-
-    s = from_url(url)
-    while COUNT > 1:
-        COUNT /= 2
-        s = from_text(s)
-        print(s)
-        print()
