@@ -6,8 +6,8 @@
 import json
 import time
 from random import randint
-
-from reportlab.graphics.shapes import Image
+from reportlab.lib.units import inch
+from reportlab.graphics.shapes import Image as Im
 from reportlab.lib.utils import ImageReader
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
@@ -27,13 +27,13 @@ from reportlab.platypus import (
     Frame,
     Table,
     Spacer,
-    Image as Im,
+    Image
 )
 
-from styles import Fonts
-from styles import Stylesheet
-from styles import Framer
-from styles import Storey
+from .styles import Fonts
+from .styles import Stylesheet
+from .styles import Framer
+from .styles import Storey
 
 #=========================
 
@@ -127,7 +127,7 @@ class Zine:
     #-------------------------
 
     def cover_img(self):
-        x = ''
+        photo = ''
         a = 0
         photos = Storey(self.dict).photos
         if len(photos) < 1:
@@ -136,15 +136,15 @@ class Zine:
         for k in photos:
             if self.dict['img'][k]['dimensions'][1] / self.dict['img'][k]['dimensions'][0] > 1 and self.dict['img'][k]['dimensions'][0] > a:
                 a = self.dict['img'][k]['dimensions'][0] * self.dict['img'][k]['dimensions'][1]
-                x = k
+                photo = k
         # If the image can't be pulled, remove it form the dictionary and try again with the next biggest
         try:
-            img = Im(self.dict['img'][x]['src'], A6[0], A6[1])
-            img.wrap(A6[0], A6[1])
-            img.hAlign = 'CENTER'
+            img = Image(self.dict['img'][photo]['src'], A6[0], A6[1])
+            img.wrap(A6[0],A6[1])
+            img.hAlign = ['CENTER', 'LEFT', 'RIGHT'][0]
             return img
         except:
-            photos.remove(x)
+            photos.remove(photo)
             return self.cover_img()              
 #-------------------------
 #=========================
