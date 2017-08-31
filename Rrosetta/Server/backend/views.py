@@ -4,6 +4,7 @@
 
 #=========================
 
+import os
 import random
 
 import httplib2
@@ -43,7 +44,6 @@ class GmailCallbackView(TemplateView):
         from .rrosettacore import text_sum
         from .rrosettacore import collect_content
         from .rrosettacore import send_email
-        #from .rrosettacore import pdf_maker
 
         """Finalise authentication process and retrieve emails."""
         # Finalise authentication
@@ -58,7 +58,9 @@ class GmailCallbackView(TemplateView):
         d['user'] = user
         d['language'] = 'english'
         #--
-        tokens = s.get_page_tokens(service)
+        #emails = s.read(credentials, service)
+        #--
+        tokens = s.get_page_tokens(service, 20)
         #print(user, "Pages: ", len(tokens))
         msgs = s.get_sent_msgs(tokens, service)
         ids = s.get_sent_ids(msgs)
@@ -67,23 +69,32 @@ class GmailCallbackView(TemplateView):
         #print(user, "contents: ", len(contents))
         bodies = s.get_sent_bodys(contents)
         #print(user, "bodies: ", len(bodies))
-        sent_mail = s.read_sent_content(bodies)
+        emails = s.read_sent_content(bodies)
         #print(user, "decoded: ", len(sent_mail))
         #--
-        formatted_emails = format_emails(sent_mail)
-        #print(user, "formatted: ", len(formatted_emails))
-        d['sentences'] = text_sum.summerise(formatted_emails, d['language'], _count=15)
-        #print(user, d['sentences'])
-        d = collect_content.scrape(d)
-        collect_content.create_json(d, d['user'])
-        print(user, "urls: ", len(d['urls']), "img: ", len(d['img'].keys()), "txt: ", len(d['txt'].keys()))
+        print("formatting...", len(emails))
         #--
-        #pdf_maker.make(d)
+        formatted_emails = format_emails(emails)
+        print("summerising...", len(formatted_emails))
+        d['sentences'] = text_sum.summerise(formatted_emails, d['language'], _count=12)
+        print('collecting...')
+        d = collect_content.scrape(d)
+        print(user, "urls: ", len(d['urls']), "img: ", len(d['img'].keys()), "txt: ", len(d['txt'].keys()))
+        collect_content.create_json(d, d['user'])
+        #--
+
+        os.startfile("{}.pdf".format(d['user']), "print")
         #--
         # send_email
         #--
-        #kwargs['sentence'] = sentence
         kwargs['user'] = user
         return kwargs
         #--
 #-------------------------
+    def try_pdf(self, d):
+        from .rrosettacore import pdf_maker
+        try:
+            pdf_maker.make(d)
+            return
+        except:
+            self.try_pdf(d)
