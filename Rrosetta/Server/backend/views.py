@@ -54,39 +54,33 @@ class GmailCallbackView(TemplateView):
         #--
         d = {}
         user = service.users().getProfile(userId='me').execute()['emailAddress']
-        print(user)
         d['user'] = user
         d['language'] = 'english'
         #--
-        #emails = s.read(credentials, service)
+        print(user, ": reading...")
+        emails = s.read(credentials, service, 20)
         #--
-        tokens = s.get_page_tokens(service, 20)
-        #print(user, "Pages: ", len(tokens))
-        msgs = s.get_sent_msgs(tokens, service)
-        ids = s.get_sent_ids(msgs)
-        #print(user, "IDs: ", len(ids))
-        contents = s.get_sent_contents(ids, service)
-        #print(user, "contents: ", len(contents))
-        bodies = s.get_sent_bodys(contents)
-        #print(user, "bodies: ", len(bodies))
-        emails = s.read_sent_content(bodies)
-        #print(user, "decoded: ", len(sent_mail))
-        #--
-        print("formatting...", len(emails))
-        #--
+        print(user, ": formatting...")
         formatted_emails = format_emails(emails)
-        print("summerising...", len(formatted_emails))
+        #--
+        print(user, ": summerising...")
         d['sentences'] = text_sum.summerise(formatted_emails, d['language'], _count=12)
-        print('collecting...')
+        #--
+        print(user, ": collecting...")
         d = collect_content.scrape(d)
-        print(user, "urls: ", len(d['urls']), "img: ", len(d['img'].keys()), "txt: ", len(d['txt'].keys()))
+        #--
+        print(user, ": urls:", len(d['urls']), " img:", len(d['img'].keys()), " txt:", len(d['txt'].keys()))
         collect_content.create_json(d, d['user'])
         #--
-
+        print(user, ": designing...")
+        self.try_pdf(d)
+        #--
+        [print(user, ": printing...")]
         os.startfile("{}.pdf".format(d['user']), "print")
         #--
         # send_email
         #--
+        print(user, ": done!")
         kwargs['user'] = user
         return kwargs
         #--
