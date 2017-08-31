@@ -100,41 +100,34 @@ class Storey:
         return story
 
     def gen_flowable(self):
-        flow = randint(0,1)
-        if flow == 1:
-            flow = randint(1,2)
-
-
-        photo = self.photos[randint(0, len(self.photos)-1)]
-        quote = self.quotes[randint(0, len(self.quotes)-1)]
-        tainr = self.containers[randint(0, len(self.containers)-1)]
-
-        q_sheet = randint(0, 5)
-        c_sheet = randint(0, 1)
-
+        flow = randint(0,randint(1,2))
         if flow == 0:
             try:
+                photo = self.photos[randint(0, len(self.photos)-1)]
                 img = Image(self.dict['img'][photo]['src'], self.dict['img'][photo]['dimensions'][0], self.dict['img'][photo]['dimensions'][1])
                 img.wrap(A6[0],A6[1])
                 img.hAlign = ['CENTER', 'LEFT', 'RIGHT'][randint(0,3)]
                 return img
             except:
                 return Spacer(randint(0, 100), randint(0, 100))
-        if flow == 3:
-            return  Spacer(randint(0, 100), randint(0, 100))
-        if flow == 1:
-            #return Paragraph(quote, Stylesheet.stylesheet['quote'][q_sheet])
+        elif flow == 1:
             try:
+                quote = self.quotes[randint(0, len(self.quotes)-1)]
+                q_sheet = randint(0, 5)
+                #return Paragraph(quote, Stylesheet.stylesheet['quote'][q_sheet])
                 return Paragraph(cleanhtml(quote), Stylesheet.stylesheet['title'])
             except:
                 return Spacer(randint(0, 100), randint(0, 100))
-
-        if flow == 2:
-            #return Paragraph(self.dict['txt'][tainr]['text'], Stylesheet.stylesheet['quote'][q_sheet])
+        elif flow == 2:
             try:
+                tainr = self.containers[randint(0, (len(self.containers)-1))]
+                c_sheet = randint(0, 1)
+                #return Paragraph(self.dict['txt'][tainr]['text'], Stylesheet.stylesheet['quote'][q_sheet])
                 return Paragraph(cleanhtml(self.dict['txt'][tainr]['text']), Stylesheet.stylesheet['default'])
             except:
                 return Spacer(randint(0, 100), randint(0, 100))
+        else:
+            return Spacer(randint(0, 100), randint(0, 100))
 
 #https://stackoverflow.com/questions/9662346/python-code-to-remove-html-tags-from-a-string
 def cleanhtml(raw_html):

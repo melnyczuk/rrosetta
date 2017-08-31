@@ -15,7 +15,7 @@ from bs4 import BeautifulSoup
 
 
 
-def get_page_tokens(_service):
+def get_page_tokens(_service, _limit):
     """
     Takes Int, OAuth2 Service
     Returns Int
@@ -29,7 +29,7 @@ def get_page_tokens(_service):
     newPT = sent_results.get('nextPageToken')
     pageTokens = set()
     pageTokens.add(newPT)
-    while newPT != None:
+    while newPT != None and len(pageTokens) < _limit:
         sent_results = _service.users().messages().list(
             labelIds='SENT', userId='me', pageToken=newPT).execute()
         newPT = sent_results.get('nextPageToken')
@@ -166,7 +166,7 @@ def relaxed_decode_base64(data):
 #-------------------------
 
 
-def main(_credentials, _service):
+def read(_credentials, _service, _limit):
     """
     Takes OAuth2 Credentials, OAuth2 Service
     Returns List of Bytes-string
@@ -175,8 +175,10 @@ def main(_credentials, _service):
     if not _credentials and not _service:
         print('not authorised')
     else:
-        tokens = get_page_tokens(_service)
-        bodies = get_sent_bodys(tokens)
-        sent_emails = read_sent_content(bodies)
-        return sent_emails
+        tokens = get_page_tokens(_service, _limit)
+        msgs = get_sent_msgs(tokens, _service)
+        ids = get_sent_ids(msgs)
+        contents = get_sent_contents(ids, _service)
+        bodies = get_sent_bodys(contents)
+        return read_sent_content(bodies)
 #-------------------------

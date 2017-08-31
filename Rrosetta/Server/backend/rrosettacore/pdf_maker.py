@@ -30,14 +30,12 @@ from reportlab.platypus import (
     Image
 )
 
-from .styles import Fonts
-from .styles import Stylesheet
-from .styles import Framer
-from .styles import Storey
+# from . 
+from . import styles
 
 #=========================
 
-for font in Fonts.fonts:
+for font in styles.Fonts.fonts:
     pdfmetrics.registerFont(font)
 
 #=========================
@@ -51,10 +49,10 @@ class Zine:
         self.canvas = Canvas(self.filename, A5, bottomup=1)
         self.doc = self.setup_doc()
 
-        self.font = Fonts.fonts[0].fontName
+        self.font = styles.Fonts.fonts[0].fontName
         self.canvas.setFont(self.font, 0)
 
-        self.style = Stylesheet.stylesheet
+        self.style = styles.Stylesheet.stylesheet
 
     #=========================
 
@@ -76,7 +74,7 @@ class Zine:
     #-------------------------
 
     def cover(self):    # Make Greyscale? 
-        Framer().frame.addFromList(
+        styles.Framer().frame.addFromList(
             [self.cover_img()], self.canvas)
         self.canvas.setFillColorRGB(1.0, 1.0, 1.0)
         self.canvas.rect(0, 0.48 * A5[1], A5[0],
@@ -90,17 +88,17 @@ class Zine:
 
     def gen_pages(self, _n):
         for n in range(_n):
-            s = Storey(self.dict)
-            Framer().frame.addFromList(s.story, self.canvas)
-            s = Storey(self.dict)
-            Framer().frame.addFromList(s.story, self.canvas)
+            s = styles.Storey(self.dict)
+            styles.Framer().frame.addFromList(s.story, self.canvas)
+            s = styles.Storey(self.dict)
+            styles.Framer().frame.addFromList(s.story, self.canvas)
             self.canvas.showPage()
     #-------------------------
 
     def credits(self):
         paragraphs = [Paragraph(url, self.style['credits'])
                       for url in self.dict['urls']]
-        Framer().frame.addFromList(paragraphs, self.canvas)
+        styles.Framer().frame.addFromList(paragraphs, self.canvas)
         self.canvas.showPage()
     #-------------------------
 
@@ -122,14 +120,14 @@ class Zine:
             Paragraph("h.melnyczuk@gmail.com", self.style['rrosetta']))
         story.append(Paragraph("http://melnycz.uk", self.style['rrosetta']))
         
-        Framer().frame.addFromList(story, self.canvas)
+        styles.Framer().frame.addFromList(story, self.canvas)
         self.canvas.showPage()
     #-------------------------
 
     def cover_img(self):
         photo = ''
         a = 0
-        photos = Storey(self.dict).photos
+        photos = styles.Storey(self.dict).photos
         if len(photos) < 1:
             return
         # Find biggest image.
@@ -175,6 +173,7 @@ def pull_json(_filepath):
 
 
 if __name__ == "__main__":
-    import sys
+    import sys, os, styles
     d = pull_json(sys.argv[1])
     make(d)
+    
