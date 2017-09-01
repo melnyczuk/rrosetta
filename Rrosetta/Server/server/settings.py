@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 ]
 
-GOOGLE_OAUTH2_CLIENT_SECRETS_JSON = "C:/Users/HPM/Downloads/client_secret_2.json"
+GOOGLE_OAUTH2_CLIENT_SECRETS_JSON = "./client_secret_2.json"
 GOOGLE_OAUTH_CLIENT_SECRET = "KwwSIjYjFagjPac9-9buPSEJ"
 GOOGLE_OAUTH_CLIENT_ID = "240841548439-806a8ge6r5d1li7tqe4g8f0iocg5ihnf.apps.googleusercontent.com"
 GOOGLE_OAUTH_SCOPE = ["https://www.googleapis.com/auth/gmail.readonly",
