@@ -34,7 +34,6 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'backend.apps.BackendConfig',
     'frontend.apps.FrontendConfig',
-    'output.apps.OutputConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
