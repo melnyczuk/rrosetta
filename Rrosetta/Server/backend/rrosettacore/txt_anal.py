@@ -4,7 +4,8 @@
 #=========================
 
 import re
-from nltk.corpus import stopwords
+#from nltk.corpus import stopwords
+from sumy.utils import get_stop_words
 
 #=========================
 
@@ -22,7 +23,7 @@ def contains(_text, _dict):
     from the summerised sentences
     """
     words = [word for item in _dict['sentences'] for word in item.split(
-        ' ') if word in _text and word not in stopwords.words(_dict['language'])]
+        ' ') if word in _text and word not in (_dict['language'])]
     if len(words) > 1:
         return words
     else:
