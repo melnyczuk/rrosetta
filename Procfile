@@ -1,1 +1,1 @@
-web: python Rrosetta/Server/manage.py runserver
+web: python3 Server/manage.py runserver
