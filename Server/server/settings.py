@@ -21,6 +21,11 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = './secretsettings.txt'
+GOOGLE_OAUTH2_CLIENT_SECRETS_JSON = "./server/client_secret_2.json"
+#GOOGLE_OAUTH_CLIENT_SECRET = "KwwSIjYjFagjPac9-9buPSEJ"
+#GOOGLE_OAUTH_CLIENT_ID = "240841548439-806a8ge6r5d1li7tqe4g8f0iocg5ihnf.apps.googleusercontent.com"
+GOOGLE_OAUTH_SCOPE = ["https://www.googleapis.com/auth/gmail.readonly",]
+GOOGLE_OAUTH_REDIRECT_URI = "http://127.0.0.1:8000/backend/callback"
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -42,11 +47,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 ]
 
-#GOOGLE_OAUTH2_CLIENT_SECRETS_JSON = "./server/client_secret_2.json"
-GOOGLE_OAUTH_CLIENT_SECRET = "KwwSIjYjFagjPac9-9buPSEJ"
-GOOGLE_OAUTH_CLIENT_ID = "240841548439-806a8ge6r5d1li7tqe4g8f0iocg5ihnf.apps.googleusercontent.com"
-GOOGLE_OAUTH_SCOPE = ["https://www.googleapis.com/auth/gmail.readonly",]
-GOOGLE_OAUTH_REDIRECT_URI = "http://127.0.0.1:8000/backend/callback"
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -59,22 +60,6 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'server.urls'
-
-# TEMPLATES = [
-#     {
-#         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-#         'DIRS': [],
-#         'APP_DIRS': True,
-#         'OPTIONS': {
-#             'context_processors': [
-#                 'django.template.context_processors.debug',
-#                 'django.template.context_processors.request',
-#                 'django.contrib.auth.context_processors.auth',
-#                 'django.contrib.messages.context_processors.messages',
-#             ],
-#         },
-#     },
-# ]
 
 TEMPLATES = [
     {
@@ -160,3 +145,7 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(PROJECT_ROOT, 'static'),
 )
+
+# Simplified static file serving.
+# https://warehouse.python.org/project/whitenoise/
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
