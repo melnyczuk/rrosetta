@@ -1,7 +1,0 @@
-{% extends 'base.html' %} {% load i18n %} {% block content %}
-<h2>{% trans 'User emails' %}</h2>
-
-<ul>
-    {{ sentence }}<br><br>{% for url in urls %} {{url}} {% endfor %}
-</ul>
-{% endblock %}
