@@ -17,10 +17,10 @@ from oauth2client.client import OAuth2WebServerFlow
 #=========================
 
 FLOW = OAuth2WebServerFlow(
-    client_id=settings.GOOGLE_OAUTH_CLIENT_ID,
-    client_secret=settings.GOOGLE_OAUTH_CLIENT_SECRET,
-    scope=settings.GOOGLE_OAUTH_SCOPE,
-    redirect_uri=settings.GOOGLE_OAUTH_REDIRECT_URI,
+    client_id=settings.GOOGLE_OAUTH2_CLIENT_ID,
+    client_secret=settings.GOOGLE_OAUTH2_CLIENT_SECRET,
+    scope=settings.GOOGLE_OAUTH2_SCOPE,
+    redirect_uri=settings.GOOGLE_OAUTH2_REDIRECT_URI,
 )
 
 #=========================
