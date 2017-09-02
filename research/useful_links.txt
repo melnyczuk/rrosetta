@@ -1,7 +1,0 @@
-########################################
-### -- USEFUL LINKS AND RESOURCES -- ###
-----------------------------------------
-- Deep Learning In Python: https://goo.gl/nMmu24
-- WebPy: http://webpy.org/
-https://www.youtube.com/watch?v=ogrJaOIuBx4
-https://www.youtube.com/watch?v=Ei0fL6j8DtI

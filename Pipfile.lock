@@ -1,0 +1,224 @@
+{
+    "_meta": {
+        "hash": {
+            "sha256": "eb6e8e4ec8189e6c75867317ea178cffc46b4ef139f310966b7336df268f23a2"
+        },
+        "requires": {},
+        "sources": [
+            {
+                "url": "https://pypi.python.org/simple",
+                "verify_ssl": true
+            }
+        ]
+    },
+    "default": {
+        "appier": {
+            "version": "==1.12.1"
+        },
+        "astroid": {
+            "version": "==1.5.3"
+        },
+        "beautifulsoup4": {
+            "version": "==4.6.0"
+        },
+        "breadability": {
+            "version": "==0.1.20"
+        },
+        "cachetools": {
+            "version": "==2.0.1"
+        },
+        "certifi": {
+            "version": "==2017.7.27.1"
+        },
+        "chardet": {
+            "version": "==3.0.4"
+        },
+        "colorama": {
+            "version": "==0.3.9"
+        },
+        "defusedxml": {
+            "version": "==0.5.0"
+        },
+        "django": {
+            "version": "==1.11.4"
+        },
+        "django-social-auth": {
+            "version": "==0.7.28"
+        },
+        "docopt": {
+            "version": "==0.6.2"
+        },
+        "google-api": {
+            "version": "==0.1.11"
+        },
+        "google-api-python-client": {
+            "version": "==1.6.2"
+        },
+        "google-auth": {
+            "version": "==1.0.2"
+        },
+        "html5lib": {
+            "version": "==0.9999999"
+        },
+        "httplib2": {
+            "version": "==0.10.3"
+        },
+        "idna": {
+            "version": "==2.6"
+        },
+        "isort": {
+            "version": "==4.2.15"
+        },
+        "jsonpickle": {
+            "version": "==0.9.5"
+        },
+        "lazy-object-proxy": {
+            "version": "==1.3.1"
+        },
+        "lxml": {
+            "version": "==3.8.0"
+        },
+        "markdown": {
+            "version": "==2.6.8"
+        },
+        "markupsafe": {
+            "version": "==1.0"
+        },
+        "mccabe": {
+            "version": "==0.6.1"
+        },
+        "nltk": {
+            "version": "==3.2.4"
+        },
+        "numpy": {
+            "version": "==1.13.1"
+        },
+        "oauth2": {
+            "version": "==1.9.0.post1"
+        },
+        "oauth2.3": {
+            "version": "==1.5.211"
+        },
+        "oauth2client": {
+            "version": "==4.1.2"
+        },
+        "oauthlib": {
+            "version": "==2.0.2"
+        },
+        "olefile": {
+            "version": "==0.44"
+        },
+        "opencv": {
+            "version": "==1.0.1"
+        },
+        "pandas": {
+            "version": "==0.20.3"
+        },
+        "pillow": {
+            "version": "==4.2.1"
+        },
+        "pip": {
+            "version": "==9.0.1"
+        },
+        "protobuf": {
+            "version": "==3.3.0"
+        },
+        "py-web-search": {
+            "version": "==0.2.4"
+        },
+        "py2exe": {
+            "version": "==0.9.2.2"
+        },
+        "pyasn1": {
+            "version": "==0.3.2"
+        },
+        "pyasn1-modules": {
+            "version": "==0.0.11"
+        },
+        "pycodestyle": {
+            "version": "==2.3.1"
+        },
+        "pyjwt": {
+            "version": "==1.5.2"
+        },
+        "pylint": {
+            "version": "==1.7.1"
+        },
+        "python-dateutil": {
+            "version": "==2.6.1"
+        },
+        "python-levenshtein": {
+            "version": "==0.12.0"
+        },
+        "python-openid": {
+            "version": "==2.2.5"
+        },
+        "python-openid3": {
+            "version": "==2.2.6"
+        },
+        "python-social-auth": {
+            "version": "==0.3.6"
+        },
+        "python3-openid": {
+            "version": "==3.1.0"
+        },
+        "pytz": {
+            "version": "==2017.2"
+        },
+        "pyyaml": {
+            "version": "==3.12"
+        },
+        "reportlab": {
+            "version": "==3.4.0"
+        },
+        "requests": {
+            "version": "==2.18.1"
+        },
+        "requests-oauthlib": {
+            "version": "==0.8.0"
+        },
+        "rsa": {
+            "version": "==3.4.2"
+        },
+        "scikit-learn": {
+            "version": "==0.18.2"
+        },
+        "scipy": {
+            "version": "==0.19.1"
+        },
+        "setuptools": {
+            "version": "==36.3.0"
+        },
+        "six": {
+            "version": "==1.10.0"
+        },
+        "social-auth-app-django": {
+            "version": "==1.2.0"
+        },
+        "social-auth-core": {
+            "version": "==1.4.0"
+        },
+        "stem": {
+            "version": "==1.5.4"
+        },
+        "sumy": {
+            "version": "==0.7.0"
+        },
+        "tweepy": {
+            "version": "==3.5.0"
+        },
+        "uritemplate": {
+            "version": "==3.0.0"
+        },
+        "urllib3": {
+            "version": "==1.21.1"
+        },
+        "werkzeug": {
+            "version": "==0.12.2"
+        },
+        "wrapt": {
+            "version": "==1.10.10"
+        }
+    },
+    "develop": {}
+}
