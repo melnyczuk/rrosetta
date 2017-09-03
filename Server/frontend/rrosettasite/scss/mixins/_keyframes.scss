@@ -1,9 +1,0 @@
-// Keyframes
-@mixin keyframes($keyframes) {
-  @-webkit-keyframes #{$keyframes} {
-    @content;
-  }
-  @keyframes #{$keyframes} {
-    @content;
-  }
-}

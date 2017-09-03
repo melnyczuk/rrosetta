@@ -1,8 +1,0 @@
-// Position
-@mixin position($position, $top: null, $right: null, $bottom: null, $left: null) {
-  position: $position;
-  top: $top;
-  left: $left;
-  right: $right;
-  bottom: $bottom;
-}
