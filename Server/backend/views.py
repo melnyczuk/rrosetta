@@ -33,9 +33,12 @@ class GmailView(RedirectView):
         return FLOW.step1_get_authorize_url()
 #-------------------------
 
+favicon_view = RedirectView.as_view(url='favicon.ico', permanent=True)
+    
+
 class GmailCallbackView(TemplateView):
     """Show user's emails."""
-
+    
     template_name = 'backend/callback.html'
 
     def get_context_data(self, **kwargs):
