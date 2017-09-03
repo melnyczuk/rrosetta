@@ -3,6 +3,8 @@ from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from django.views.generic import RedirectView, TemplateView
 from bs4 import BeautifulSoup
 
+favicon_view = RedirectView.as_view(url='favicon.ico', permanent=True)
+
 def load(request):
     html = """
 <!DOCTYPE html>
