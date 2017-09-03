@@ -31,14 +31,12 @@ GOOGLE_OAUTH2_REDIRECT_URI = "http://c82a5076.ngrok.io/backend/callback"
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['rrosetta.herokuapp.com','127.0.0.1', 'c82a5076.ngrok.io']
-
+ALLOWED_HOSTS = ['127.0.0.1', 'c82a5076.ngrok.io']
 
 # Application definition
 
 INSTALLED_APPS = [
-    'backend.apps.BackendConfig',
-    'frontend.apps.FrontendConfig',
+    'rrosetta.apps.RrosettaConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -46,8 +44,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 ]
-
-
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -79,10 +75,7 @@ TEMPLATES = [
     },
 ]
 
-
-
 WSGI_APPLICATION = 'server.wsgi.application'
-
 
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
@@ -129,32 +122,12 @@ USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/1.11/howto/static-files/
-
-#STATIC_URL = '/static/'
-
-#https://devcenter.heroku.com/articles/django-assets
-PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
-
-# Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
 
 # Extra places for collectstatic to find static files.
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
     '/var/www/static/',
 )
-
-# Simplified static file serving.
-# https://warehouse.python.org/project/whitenoise/
-#STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
-
-# Heroku: Update database configuration from $DATABASE_URL.
-#https://developer.mozilla.org/en-US/docs/Learn/Server-side/Django/Deployment
-import dj_database_url
-db_from_env = dj_database_url.config(conn_max_age=500)
-DATABASES['default'].update(db_from_env)
