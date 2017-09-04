@@ -21,6 +21,7 @@ favicon_view = RedirectView.as_view(url='favicon.ico', permanent=True)
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^', include('rrosetta.urls')),
+    url(r'^$', include('rrosetta.urls')),
+    url(r'^rrosetta/', include('rrosetta.urls')),
     url(r'^favicon', favicon_view)
 ]
