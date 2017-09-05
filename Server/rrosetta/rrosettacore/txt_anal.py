@@ -4,8 +4,7 @@
 #=========================
 
 import re
-#from nltk.corpus import stopwords
-from sumy.utils import get_stop_words
+from nltk.corpus import stopwords
 
 #=========================
 

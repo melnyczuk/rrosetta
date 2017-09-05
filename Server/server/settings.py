@@ -25,13 +25,13 @@ SECRET_KEY = './secretsettings.txt'
 GOOGLE_OAUTH2_CLIENT_SECRET = "KwwSIjYjFagjPac9-9buPSEJ"
 GOOGLE_OAUTH2_CLIENT_ID = "240841548439-806a8ge6r5d1li7tqe4g8f0iocg5ihnf.apps.googleusercontent.com"
 GOOGLE_OAUTH2_SCOPE = ["https://www.googleapis.com/auth/gmail.readonly",]
-GOOGLE_OAUTH2_REDIRECT_URI = "http://8cf0b9f3.ngrok.io/rrosetta/callback"
+GOOGLE_OAUTH2_REDIRECT_URI = "http://rrosetta.eu.ngrok.io/rrosetta/callback"
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', '8cf0b9f3.ngrok.io']
+ALLOWED_HOSTS = ['127.0.0.1', 'rrosetta.eu.ngrok.io']
 
 # Application definition
 

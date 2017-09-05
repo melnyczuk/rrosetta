@@ -1,6 +1,6 @@
 howto.txt
 
 cd hpm/rrosetta
-python3 server/manage.py runserver -host-header=localhost 8000
-./ngrok http 8000
+python3 server/manage.py runserver -host-header=localhost 2486
+ngrok http -region=eu -subdomain=rrosetta 2486
 index.html --> ln 158 <-- ngrok https url
