@@ -4,7 +4,7 @@
 
 #=========================
 
-import os
+import os, subprocess
 import random
 
 import httplib2
@@ -56,36 +56,43 @@ class GmailCallbackView(TemplateView):
         service = discovery.build('gmail', 'v1', http=http)
         #--
         d = {}
-        user = service.users().getProfile(userId='me').execute()['emailAddress']
+        try: user = service.users().getProfile(userId='me').execute()['emailAddress']
+        except: print('sorry'); return;
         d['user'] = user
         d['language'] = 'english'                       # For future functionality of user langauge
         #--
         print(user, ": reading...")
-        emails = s.read(credentials, service, 20)
+        try: emails = s.read(credentials, service, 20)
+        except: print('sorry'); return;
         #--
         print(user, ": formatting...")
-        formatted_emails = format_emails(emails)
+        try: formatted_emails = format_emails(emails)
+        except: print('sorry'); return;
         #--
         print(user, ": summerising...")
-        d['sentences'] = text_sum.summerise(formatted_emails, d['language'], _count=12)
+        try: d['sentences'] = text_sum.summerise(formatted_emails, d['language'], _count=12)
+        except: print('sorry'); return;
         #--
         print(user, ": collecting...")
-        d = collect_content.scrape(d)
+        try: d = collect_content.scrape(d)
+        except: print('sorry'); return;
         #--
         print(user, ": urls:", len(d['urls']), " img:", len(d['img'].keys()), " txt:", len(d['txt'].keys()))
-        collect_content.create_json(d, d['user'])
+        try: collect_content.create_json(d, d['user'])
+        except: print('sorry'); return;
         #--
         print(user, ": designing...")
         self.try_pdf(d)
         #--
         [print(user, ": printing...")]
-        os.startfile("{}.pdf".format(d['user']), "print")
+        #win: os.startfile("{}.pdf".format(d['user']), "print")
+        lpr =  subprocess.Popen("/usr/bin/lpr", stdin=subprocess.PIPE)
+        lpr.stdin.write("./pdfs/{}.pdf".format(d['user']))
         #--
         # send_email
         #--
         print(user, ": done!")
-        kwargs['user'] = user
-        return kwargs
+        return
         #--
 #-------------------------
     def try_pdf(self, d):

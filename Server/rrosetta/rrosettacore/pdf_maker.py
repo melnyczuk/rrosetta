@@ -44,7 +44,7 @@ for font in styles.Fonts.fonts:
 class Zine:
     def __init__(self, _dict):
         self.dict = _dict
-        self.filename = "{}.pdf".format(_dict['user'])
+        self.filename = "./pdfs/{}.pdf".format(_dict['user'])
 
         self.canvas = Canvas(self.filename, A5, bottomup=1)
         self.doc = self.setup_doc()
@@ -73,7 +73,7 @@ class Zine:
         )
     #-------------------------
 
-    def cover(self):    # Make Greyscale? 
+    def cover(self):    
         styles.Framer().frame.addFromList(
             [self.cover_img()], self.canvas)
         self.canvas.setFillColorRGB(1.0, 1.0, 1.0)
