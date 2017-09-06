@@ -122,10 +122,15 @@ class GmailCallbackView(TemplateView):
             kwargs['ln2'] = 'so kindly please close this tab.'
             return kwargs
         #--
-        [print(user, ": printing...")]
+        print(user, ": printing...")
         #win: os.startfile("{}.pdf".format(d['user']), "print")
-        lpr =  subprocess.Popen("/usr/bin/lpr", stdin=subprocess.PIPE)
-        lpr.stdin.write("./pdfs/{}.pdf".format(d['user']))
+        try: subprocess.run(["/usr/bin/lpr", "{}.pdf".format(d['user'])])
+        except:
+            print(user, ": failed")
+            kwargs['ln0'] = 'Rrosetta doesn\'t want to print your zine right now.'
+            kwargs['ln1'] = 'She will send you it as a pdf.'
+            kwargs['ln2'] = 'Kindly please close this tab.'
+            return kwargs
         #--
         # send_email
         #--
