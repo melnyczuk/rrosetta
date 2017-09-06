@@ -124,7 +124,7 @@ class GmailCallbackView(TemplateView):
         #--
         print(user, ": printing...")
         #win: os.startfile("{}.pdf".format(d['user']), "print")
-        try: subprocess.run(["/usr/bin/lpr", "{}.pdf".format(d['user'])])
+        try: subprocess.run(["/usr/bin/lpr", "-o portrait", "-o media=A4", "-o number-up=2", "./pdfs/{}.pdf".format(d['user'])])
         except:
             print(user, ": failed")
             kwargs['ln0'] = 'Rrosetta doesn\'t want to print your zine right now.'

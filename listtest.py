@@ -9,6 +9,6 @@ import subprocess
 #    lpr.stdin.write(pdf)
 
 def run(_string):
-    subprocess.run(["/usr/bin/lpr", _string])
+    subprocess.run(["/usr/bin/lpr", "-o portrait", "-o media=A4", "-o number-up=2", _string])
 
 run('pdfs/h.melnyczuk@gmail.com.pdf')
