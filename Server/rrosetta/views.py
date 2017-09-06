@@ -55,34 +55,72 @@ class GmailCallbackView(TemplateView):
         http = credentials.authorize(httplib2.Http())
         service = discovery.build('gmail', 'v1', http=http)
         #--
-        d = {}
         try: user = service.users().getProfile(userId='me').execute()['emailAddress']
         except: print('sorry'); return;
+        #--
+        if self.check_list(user):
+            kwargs['ln0'] = 'Rrosetta has already learnt all about you.'
+            kwargs['ln1'] = 'She would like to move on now,'
+            kwargs['ln2'] = 'so kindly please close this tab.'
+            return kwargs
+        #--
+        d = {}
         d['user'] = user
-        d['language'] = 'english'                       # For future functionality of user langauge
+        d['language'] = 'english' # For future functionality of user langauge
         #--
         print(user, ": reading...")
         try: emails = s.read(credentials, service, 20)
-        except: print('sorry'); return;
+        except: 
+            print(user, ": failed")
+            kwargs['ln0'] = 'Rrosetta has found you emails to be flawed.'
+            kwargs['ln1'] = 'She would like to move on now,'
+            kwargs['ln2'] = 'so kindly please close this tab.'
+            return kwargs
         #--
         print(user, ": formatting...")
         try: formatted_emails = format_emails(emails)
-        except: print('sorry'); return;
+        except: 
+            print(user, ": failed")
+            kwargs['ln0'] = 'Rrosetta has found you emails to be flawed.'
+            kwargs['ln1'] = 'You are of no user to her,'
+            kwargs['ln2'] = 'so kindly please close this tab.'
+            return kwargs
         #--
         print(user, ": summerising...")
         try: d['sentences'] = text_sum.summerise(formatted_emails, d['language'], _count=12)
-        except: print('sorry'); return;
+        except:             
+            print(user, ": failed")
+            kwargs['ln0'] = 'Rrosetta has found your writing illegible.'
+            kwargs['ln1'] = 'You are of no use to her,'
+            kwargs['ln2'] = 'so kindly please close this tab.'
+            return kwargs
         #--
         print(user, ": collecting...")
         try: d = collect_content.scrape(d)
-        except: print('sorry'); return;
+        except:             
+            print(user, ": failed")
+            kwargs['ln0'] = 'Rrosetta cannot find anything interesting about you.'
+            kwargs['ln1'] = 'She would like to move on now,'
+            kwargs['ln2'] = 'so kindly please close this tab.'
+            return kwargs
         #--
         print(user, ": urls:", len(d['urls']), " img:", len(d['img'].keys()), " txt:", len(d['txt'].keys()))
         try: collect_content.create_json(d, d['user'])
-        except: print('sorry'); return;
+        except:             
+            print(user, ": failed")
+            kwargs['ln0'] = 'Rrosetta would like to forget about you.'
+            kwargs['ln1'] = 'She would like to move on now,'
+            kwargs['ln2'] = 'so kindly please close this tab.'
+            return kwargs
         #--
         print(user, ": designing...")
-        self.try_pdf(d)
+        try: self.try_pdf(d)
+        except:             
+            print(user, ": failed")
+            kwargs['ln0'] = 'Rrosetta lost interest.'
+            kwargs['ln1'] = 'She would like to move on now,'
+            kwargs['ln2'] = 'so kindly please close this tab.'
+            return kwargs
         #--
         [print(user, ": printing...")]
         #win: os.startfile("{}.pdf".format(d['user']), "print")
@@ -106,3 +144,13 @@ class GmailCallbackView(TemplateView):
             return
         except:
             self.try_pdf(d)
+#-------------------------
+    def check_list(self, _user):
+        user_list = open('pastusers.txt', 'r')
+        if (_user + ' \n') in user_list:
+            return True
+        else:
+            f = open('pastusers.txt', 'a')
+            f.writelines(_user + ' \n')
+            f.close()
+            return False
