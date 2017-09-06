@@ -47,6 +47,7 @@ class GmailCallbackView(TemplateView):
         from .rrosettacore import text_sum
         from .rrosettacore import collect_content
         from .rrosettacore import send_email
+        from .rrosettacore import pdf_maker
 
         """Finalise authentication process and retrieve emails."""
         # Finalise authentication
@@ -105,16 +106,17 @@ class GmailCallbackView(TemplateView):
             return kwargs
         #--
         print(user, ": urls:", len(d['urls']), " img:", len(d['img'].keys()), " txt:", len(d['txt'].keys()))
-        try: collect_content.create_json(d, d['user'])
-        except:             
-            print(user, ": failed")
-            kwargs['ln0'] = 'Rrosetta would like to forget about you.'
-            kwargs['ln1'] = 'She would like to move on now,'
-            kwargs['ln2'] = 'so kindly please close this tab.'
-            return kwargs
+        #try: collect_content.create_json(d, d['user'])
+        #except:             
+#            print(user, ": failed")
+#            kwargs['ln0'] = 'Rrosetta would like to forget about you.'
+#            kwargs['ln1'] = 'She would like to move on now,'
+#            kwargs['ln2'] = 'so kindly please close this tab.'
+#            return kwargs
         #--
         print(user, ": designing...")
-        try: self.try_pdf(d)
+        try:
+            pdf_maker.make(d)
         except:             
             print(user, ": failed")
             kwargs['ln0'] = 'Rrosetta lost interest.'
