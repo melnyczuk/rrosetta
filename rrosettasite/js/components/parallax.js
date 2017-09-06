@@ -1,19 +1,19 @@
 // Parallax
 var Parallax = function() {
-  'use strict';
+    'use strict';
 
-  // Handle Parallax
-  var handleParallax = function() {
-    $('.js__parallax-window').parallax("50%", 0.1);
-  }
-
-  return {
-    init: function() {
-      handleParallax(); // initial setup for Parallax
+    // Handle Parallax
+    var handleParallax = function() {
+        $('.js__parallax-window').parallax("0%", 0.5);
     }
-  }
+
+    return {
+        init: function() {
+            handleParallax(); // initial setup for Parallax
+        }
+    }
 }();
 
 $(document).ready(function() {
-  Parallax.init();
+    Parallax.init();
 });
