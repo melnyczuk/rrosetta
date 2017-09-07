@@ -1357,13 +1357,13 @@
 }
 
 .g-radius--left-50 {
-    border-top-left-radius: 8.125rem !important;
-    border-bottom-left-radius: 8.125rem !important;
+    border-top-left-radius: 3.125rem !important;
+    border-bottom-left-radius: 3.125rem !important;
 }
 
 .g-radius--right-50 {
-    border-top-right-radius: 8.125rem !important;
-    border-bottom-right-radius: 8.125rem !important;
+    border-top-right-radius: 3.125rem !important;
+    border-bottom-right-radius: 3.125rem !important;
 }
 
 

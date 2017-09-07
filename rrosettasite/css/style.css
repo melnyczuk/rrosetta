@@ -170,30 +170,30 @@ a:focus {
 
 
 /*----------------------------------
-  Selection
-------------------------------------*/
+    Selection
+  ------------------------------------*/
 
-::selection {
+ ::selection {
     color: #fff;
     background: #13b1cd;
     text-shadow: none;
 }
 
-::-webkit-selection {
+ ::-webkit-selection {
     color: #fff;
     background: #13b1cd;
     text-shadow: none;
 }
 
-:active,
-:focus {
+ :active,
+ :focus {
     outline: none;
 }
 
 
 /*----------------------------------
-  Button
-------------------------------------*/
+    Button
+  ------------------------------------*/
 
 .s-btn {
     display: inline-block;
@@ -243,7 +243,7 @@ fieldset[disabled] .s-btn {
 
 
 /* Sizes
------------------------------- */
+  ------------------------------ */
 
 .s-btn--xs {
     font-size: 0.75rem;
@@ -264,13 +264,13 @@ fieldset[disabled] .s-btn {
 }
 
 .s-btn-icon--md {
-    font-size: 6rem;
-    padding: 8.9375rem 10.5625rem 8.75rem;
+    font-size: 1rem;
+    padding: 0.9375rem 1.5625rem 0.75rem;
 }
 
 
 /* Styles
------------------------------- */
+  ------------------------------ */
 
 .s-btn--white-brd {
     color: #fff;
@@ -368,8 +368,8 @@ fieldset[disabled] .s-btn {
 
 
 /*----------------------------------
-  Clients v1
-------------------------------------*/
+    Clients v1
+  ------------------------------------*/
 
 .s-clients-v1 {
     display: block;
@@ -392,8 +392,8 @@ fieldset[disabled] .s-btn {
 
 
 /*----------------------------------
-  FAQ
-------------------------------------*/
+    FAQ
+  ------------------------------------*/
 
 .s-faq__pseudo {
     position: relative;
@@ -428,8 +428,8 @@ fieldset[disabled] .s-btn {
 
 
 /*----------------------------------
-  Form Input
-------------------------------------*/
+    Form Input
+  ------------------------------------*/
 
 
 /* Form Input v1 */
@@ -714,8 +714,8 @@ fieldset[disabled] .s-btn {
 
 
 /*----------------------------------
-  Icons
-------------------------------------*/
+    Icons
+  ------------------------------------*/
 
 .s-icon {
     display: inline-block;
@@ -736,7 +736,7 @@ fieldset[disabled] .s-btn {
 
 
 /* Sizes
------------------------------- */
+  ------------------------------ */
 
 .s-icon--sm {
     width: 2.5rem;
@@ -761,7 +761,7 @@ fieldset[disabled] .s-btn {
 
 
 /* Styles
------------------------------- */
+  ------------------------------ */
 
 .s-icon--white-brd {
     color: #fff;
@@ -819,8 +819,8 @@ fieldset[disabled] .s-btn {
 
 
 /*----------------------------------
-  Promo Block
-------------------------------------*/
+    Promo Block
+  ------------------------------------*/
 
 
 /* Promo Block v1 */
@@ -1016,8 +1016,8 @@ fieldset[disabled] .s-btn {
 
 
 /*----------------------------------
-  Mockup
-------------------------------------*/
+    Mockup
+  ------------------------------------*/
 
 
 /* Mockup v1 */
@@ -1075,8 +1075,8 @@ fieldset[disabled] .s-btn {
 
 
 /*----------------------------------
-  Plan
-------------------------------------*/
+    Plan
+  ------------------------------------*/
 
 
 /* Plan v1 */
@@ -1114,8 +1114,8 @@ fieldset[disabled] .s-btn {
 
 
 /*----------------------------------
-  Process v1
-------------------------------------*/
+    Process v1
+  ------------------------------------*/
 
 .s-process-v1 {
     position: relative;
@@ -1144,8 +1144,8 @@ fieldset[disabled] .s-btn {
 
 
 /*----------------------------------
-  Scroll To Section
-------------------------------------*/
+    Scroll To Section
+  ------------------------------------*/
 
 
 /* Scroll To Section v1 */
@@ -1162,8 +1162,8 @@ fieldset[disabled] .s-btn {
 
 
 /*----------------------------------
-  Team v1
-------------------------------------*/
+    Team v1
+  ------------------------------------*/
 
 .s-team-v1 {
     position: relative;
@@ -1189,8 +1189,8 @@ fieldset[disabled] .s-btn {
 
 
 /*----------------------------------
-  Video
-------------------------------------*/
+    Video
+  ------------------------------------*/
 
 .s-video__bg {
     position: relative;
@@ -1228,8 +1228,8 @@ fieldset[disabled] .s-btn {
 
 
 /*----------------------------------
-  Header
-------------------------------------*/
+    Header
+  ------------------------------------*/
 
 .s-header__navbar {
     background: transparent;
@@ -1240,7 +1240,7 @@ fieldset[disabled] .s-btn {
 
 
 /* Container
------------------------------- */
+  ------------------------------ */
 
 .s-header__container {
     width: 100%;
@@ -1266,7 +1266,7 @@ fieldset[disabled] .s-btn {
 
 
 /* Navbar Row
------------------------------- */
+  ------------------------------ */
 
 .s-header__navbar-row {
     position: relative;
@@ -1282,7 +1282,7 @@ fieldset[disabled] .s-btn {
 
 
 /* Logo
------------------------------- */
+  ------------------------------ */
 
 .s-header__logo {
     position: relative;
@@ -1331,7 +1331,7 @@ fieldset[disabled] .s-btn {
 
 
 /* Trigger
------------------------------- */
+  ------------------------------ */
 
 .s-header__trigger {
     position: relative;
@@ -1446,7 +1446,7 @@ fieldset[disabled] .s-btn {
 
 
 /* Overlay
------------------------------- */
+  ------------------------------ */
 
 .s-header-bg-overlay {
     position: fixed;
@@ -1470,7 +1470,7 @@ fieldset[disabled] .s-btn {
 
 
 /* Nav
------------------------------- */
+  ------------------------------ */
 
 .s-header__nav {
     height: 100%;
@@ -1571,7 +1571,7 @@ fieldset[disabled] .s-btn {
 
 
 /* Action
------------------------------- */
+  ------------------------------ */
 
 .s-header__action {
     margin-bottom: 0;
@@ -1621,7 +1621,7 @@ fieldset[disabled] .s-btn {
 
 
 /* Menu Open/Close
------------------------------- */
+  ------------------------------ */
 
 .s-header-bg-overlay .s-header__nav-menu-item {
     opacity: 0;
@@ -1727,7 +1727,7 @@ fieldset[disabled] .s-btn {
 
 
 /* Shrink
------------------------------- */
+  ------------------------------ */
 
 
 /* Navbar */
@@ -1776,12 +1776,12 @@ fieldset[disabled] .s-btn {
 
 
 /*----------------------------------
-  Header v2
-------------------------------------*/
+    Header v2
+  ------------------------------------*/
 
 
 /* Navbar
------------------------------- */
+  ------------------------------ */
 
 .s-header-v2__navbar {
     position: relative;
@@ -1812,7 +1812,7 @@ fieldset[disabled] .s-btn {
 
 
 /* Navbar Row
------------------------------- */
+  ------------------------------ */
 
 .s-header-v2__navbar-row {
     display: table-row;
@@ -1873,7 +1873,7 @@ fieldset[disabled] .s-btn {
 
 
 /* Navbar Toggle
------------------------------- */
+  ------------------------------ */
 
 .s-header-v2__toggle {
     position: relative;
@@ -1939,7 +1939,7 @@ fieldset[disabled] .s-btn {
 
 
 /* Logo
------------------------------- */
+  ------------------------------ */
 
 .s-header-v2__logo {
     width: 100%;
@@ -1998,7 +1998,7 @@ fieldset[disabled] .s-btn {
 
 
 /* Collapse
------------------------------- */
+  ------------------------------ */
 
 @media (max-width: 61.9em) {
     .s-header-v2__navbar-collapse {
@@ -2020,7 +2020,7 @@ fieldset[disabled] .s-btn {
 
 
 /* Nav Menu
------------------------------- */
+  ------------------------------ */
 
 .s-header-v2__nav {
     list-style: none;
@@ -2109,7 +2109,7 @@ fieldset[disabled] .s-btn {
 
 
 /* Dropdown
------------------------------- */
+  ------------------------------ */
 
 .s-header-v2__dropdown-menu {
     display: none;
@@ -2157,7 +2157,7 @@ fieldset[disabled] .s-btn {
 
 
 /* Dropdown Menu Open On Hover
------------------------------- */
+  ------------------------------ */
 
 @media (min-width: 62em) {
     .s-header-v2__dropdown-on-hover:hover>.s-header-v2__dropdown-menu {
@@ -2167,7 +2167,7 @@ fieldset[disabled] .s-btn {
 
 
 /* Shrink
------------------------------- */
+  ------------------------------ */
 
 @media (min-width: 62em) {
     .s-header__shrink .s-header-v2__navbar {
@@ -2204,8 +2204,8 @@ fieldset[disabled] .s-btn {
 
 
 /*----------------------------------
-  Footer
-------------------------------------*/
+    Footer
+  ------------------------------------*/
 
 .s-footer__logo {
     position: relative;
@@ -2227,8 +2227,8 @@ fieldset[disabled] .s-btn {
 
 
 /*----------------------------------
-  Back To Top
-------------------------------------*/
+    Back To Top
+  ------------------------------------*/
 
 .s-back-to-top {
     position: fixed;
@@ -2293,8 +2293,8 @@ fieldset[disabled] .s-btn {
 
 
 /*----------------------------------
-  Cubeportfolio
-------------------------------------*/
+    Cubeportfolio
+  ------------------------------------*/
 
 .s-portfolio__filter-v1-item {
     font-size: 0.8125rem;
@@ -2317,7 +2317,7 @@ fieldset[disabled] .s-btn {
 
 
 /* Image Effect
------------------------------- */
+  ------------------------------ */
 
 .s-portfolio__img-effect {
     position: relative;
@@ -2347,7 +2347,7 @@ fieldset[disabled] .s-btn {
 
 
 /* Position
------------------------------- */
+  ------------------------------ */
 
 .s-portfolio__caption-hover--cc {
     position: absolute;
@@ -2372,7 +2372,7 @@ fieldset[disabled] .s-btn {
 
 
 /* Paginations v1
------------------------------- */
+  ------------------------------ */
 
 .s-portfolio__paginations-v1 .cbp-nav-controls {
     display: none;
@@ -2392,7 +2392,7 @@ fieldset[disabled] .s-btn {
 
 
 /* Tab v1
------------------------------- */
+  ------------------------------ */
 
 .s-tab__filter-v1 {
     display: block;
@@ -2442,8 +2442,8 @@ fieldset[disabled] .s-btn {
 
 
 /*----------------------------------
-  Google Map
-------------------------------------*/
+    Google Map
+  ------------------------------------*/
 
 
 /* Custom Style */
@@ -2507,8 +2507,8 @@ fieldset[disabled] .s-btn {
 
 
 /*----------------------------------
-  Swiper
-------------------------------------*/
+    Swiper
+  ------------------------------------*/
 
 .s-swiper {
     position: relative;
@@ -2518,7 +2518,7 @@ fieldset[disabled] .s-btn {
 
 
 /* Arrows v1
------------------------------- */
+  ------------------------------ */
 
 .s-swiper__arrow-v1--left,
 .s-swiper__arrow-v1--right {
@@ -2553,7 +2553,7 @@ fieldset[disabled] .s-btn {
 
 
 /* Pagination v1
------------------------------- */
+  ------------------------------ */
 
 .s-swiper__pagination-v1--bc {
     position: absolute;

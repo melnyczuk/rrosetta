@@ -1,5 +1,5 @@
 # This script was built from a proof of concept
-# kindly put together for me by Fabio Natali of the CCS. 
+# kindly put together for me by Fabio Natali. 
 # It would not have been possible without him.
 
 #=========================
