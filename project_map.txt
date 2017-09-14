@@ -1,0 +1,19 @@
+Server > All files for running the Django server containing Rrosettasite
+    >> Server > Django server default files - settings.py contains various project specific settings
+    >> Rrosetta > App containing rrosetta functionality > Views.py calls and contains the overarching structure of the programme.
+                >> Rosettacore > contains all the functions to perform Rrosetta - largely coded in a functional manner acting on the dictionary object created in views.py (however pdf_maker.py is coded in an OOP way)
+                               > This is the main folder to look in for marking purposes
+--
+Rrosettasite > All files regarding the website www.rrosetta.co.uk - largely borrowed code from this template http://www.free-css.com/free-css-templates/page217/megakit
+--
+About > Various text files about the project
+--
+Scripts & Scraps > Various test python scripts that essentially detail how I learnt python
+--
+Fonts > dependency fonts (must be installed locally to run)
+--
+requirements.txt > python dependencies (must be installed locally to run)
+--
+rrosettatermsandconditions.txt > terms and conditions agreement
+--
+client_secret_2.json > I have included this for marking as it is essential for running the programme
