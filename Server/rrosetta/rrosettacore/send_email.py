@@ -1,3 +1,5 @@
+# THIS IS A FAILED ATTEMPT AT MAKING AN EMAIL CLIENT TO TELL USER OF RROSETTA ZINE STATUS
+
 # https://developers.google.com/gmail/api/v1/reference/users/messages/send#examples
 """Send an email message from the user's account.
 """

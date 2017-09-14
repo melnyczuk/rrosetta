@@ -17,7 +17,7 @@ from bs4 import BeautifulSoup
 
 def get_page_tokens(_service, _limit):
     """
-    Takes Int, OAuth2 Service
+    Takes OAuth2 Service, Integer
     Returns Int
     --
     Get all the page tokens
@@ -40,7 +40,7 @@ def get_page_tokens(_service, _limit):
 
 def single_access_msgs(_service):
     """
-    Takes Int, OAuth2 Service
+    Takes OAuth2 Service
     Returns Gmail Object
     --
     Access just the first page
@@ -54,7 +54,7 @@ def single_access_msgs(_service):
 
 def get_sent_msgs(_pageTokens, _service):
     """
-    Takes Int, OAuth2 Credential, Int, OAuth2 Service
+    Takes List of Page Tokens, OAuth2 Service
     Returns List of Strings
     --
     for any given UserID
@@ -76,6 +76,12 @@ def get_sent_msgs(_pageTokens, _service):
 
 
 def get_sent_ids(_sentMSGs):
+    """
+    Takes List of Gmail Objects
+    Returns List of Message IDs
+    --
+    Get the list of message IDs in order to pull messages
+    """
     if not _sentMSGs:
         print('no sent messages')
     else:
@@ -84,6 +90,12 @@ def get_sent_ids(_sentMSGs):
 
 
 def get_sent_contents(_sentIDs, _service):
+    """
+    Takes List of Message IDs, OAuth2 Service
+    Returnsn List of Sent Message Objects
+    --
+    Gets the sent messages
+    """
     if not _sentIDs:
         print('no sent IDs')
     else:
@@ -92,6 +104,12 @@ def get_sent_contents(_sentIDs, _service):
 
 
 def get_sent_bodys(_sentContents):
+    """
+    Takes List of Sent Message Objects
+    Returns List of Strings
+    --
+    Gets the 'Body' part of the sent messages
+    """
     if not _sentContents:
         print('no sent msg content')
     else:

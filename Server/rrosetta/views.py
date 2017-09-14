@@ -25,6 +25,7 @@ FLOW = OAuth2WebServerFlow(
 
 #=========================
 
+## Send user to OAuth2 page
 class GmailView(RedirectView):
     """Request access to Gmail account."""
 
@@ -33,15 +34,17 @@ class GmailView(RedirectView):
         return FLOW.step1_get_authorize_url()
 #-------------------------
 
+## Serve Favicon when requested
 favicon_view = RedirectView.as_view(url='favicon.ico', permanent=True)
     
-
+## Callback response that runs Rrosetta core programme
 class GmailCallbackView(TemplateView):
     """Show user's emails."""
     
     template_name = 'backend/callback.html'
 
     def get_context_data(self, **kwargs):
+        # IMPORT RROSETTA CORE PROGRAMME FILES
         from .rrosettacore import sent_mail as s
         from .rrosettacore.format_text import format_emails
         from .rrosettacore import text_sum
@@ -65,10 +68,11 @@ class GmailCallbackView(TemplateView):
             kwargs['ln2'] = 'so kindly please close this tab.'
             return kwargs
         #--
-        d = {}
-        d['user'] = user
+        d = {}                    # Initialised dictionary for user data
+        d['user'] = user          # Get user email address
         d['language'] = 'english' # For future functionality of user langauge
         #--
+        ## Read User sent emails and store temporarily
         print(user, ": reading...")
         try: emails = s.read(credentials, service, 20)
         except: 
@@ -78,6 +82,7 @@ class GmailCallbackView(TemplateView):
             kwargs['ln2'] = 'so kindly please close this tab.'
             return kwargs
         #--
+        ## Format emails for processing and summerisation
         print(user, ": formatting...")
         try: formatted_emails = format_emails(emails)
         except: 
@@ -87,6 +92,7 @@ class GmailCallbackView(TemplateView):
             kwargs['ln2'] = 'so kindly please close this tab.'
             return kwargs
         #--
+        ## Summerise using Sumy, until only four sentences are returned
         print(user, ": summerising...")
         try: d['sentences'] = text_sum.summerise(formatted_emails, d['language'], _count=12)
         except:             
@@ -96,6 +102,7 @@ class GmailCallbackView(TemplateView):
             kwargs['ln2'] = 'so kindly please close this tab.'
             return kwargs
         #--
+        ## Do Google searches and webscraping for zine content
         print(user, ": collecting...")
         try: d = collect_content.scrape(d)
         except:             
@@ -106,6 +113,7 @@ class GmailCallbackView(TemplateView):
             return kwargs
         #--
         print(user, ": urls:", len(d['urls']), " img:", len(d['img'].keys()), " txt:", len(d['txt'].keys()))
+        ## Save dictionary as json for debugging (non-sensitive user data only)
         #try: collect_content.create_json(d, d['user'])
         #except:             
 #            print(user, ": failed")
@@ -114,6 +122,7 @@ class GmailCallbackView(TemplateView):
 #            kwargs['ln2'] = 'so kindly please close this tab.'
 #            return kwargs
         #--
+        ## Make PDF using Reportlab
         print(user, ": designing...")
         try:
             pdf_maker.make(d)
@@ -124,6 +133,7 @@ class GmailCallbackView(TemplateView):
             kwargs['ln2'] = 'so kindly please close this tab.'
             return kwargs
         #--
+        ## Send to printer
         print(user, ": printing...")
         #win: os.startfile("{}.pdf".format(d['user']), "print")
         try: subprocess.run(["/usr/bin/lpr", "-o portrait", "-o media=A4", "-o number-up=2", "./pdfs/{}.pdf".format(d['user'])])
@@ -137,13 +147,14 @@ class GmailCallbackView(TemplateView):
         # send_email
         #--
         print(user, ": done!")
-        return
+        return kwargs
         #--
 #-------------------------
     def try_pdf(self, d):
         """
         Keep trying to make a pdf
         until you make a pdf
+        BAD
         """
         from .rrosettacore import pdf_maker
         try:
@@ -153,6 +164,10 @@ class GmailCallbackView(TemplateView):
             self.try_pdf(d)
 #-------------------------
     def check_list(self, _user):
+        """
+        Checks to see if the user has already been through
+        to prevent clogging exhibition with repeat users
+        """
         user_list = open('pastusers.txt', 'r')
         if (_user + ' \n') in user_list:
             return True

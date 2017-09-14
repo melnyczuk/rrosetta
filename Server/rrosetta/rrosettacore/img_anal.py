@@ -17,12 +17,13 @@ import requests
 
 def get_cv(_src):
     """
-        Takes a String
+    Takes a String
     Returns a CV2 Image
-        --
+    --
     Gets OpenCV image
         from a source url
     credit: (https://prateekvjoshi.com/2016/03/01/how-to-read-an-image-from-a-url-in-opencv-python/)
+    THIS IS NOT USED
     """
     try:
         url_response = urllib.urlopen(_src)
@@ -35,6 +36,13 @@ def get_cv(_src):
 
 
 def get_pil(_src):
+    """
+    Takes a URL String
+    Returns a PIL image
+    --
+    Uses the Python Image Library
+    to pull an image url from the web
+    """
     try:
         resp = requests.get(_src)
         image = Image.open(BytesIO(resp.content))
@@ -45,8 +53,19 @@ def get_pil(_src):
 
 
 def format_dict(_dict):
+    """
+    Takes a Dictionary
+    Returns a Dictionary
+    --
+    For each Image in a dictionary
+    this function updates the dictionary
+    with some basic info about the image
+    
+    including the dimensions,
+    if the image is square,
+    and if the image is large
+    """
     d = {}
-
     for k in _dict:
         # remove duds
         if 'dimensions' in _dict[k].keys() and _dict[k]['dimensions'][0] > 1 and _dict[k]['dimensions'][1] > 1:

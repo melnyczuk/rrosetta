@@ -5,6 +5,5 @@ from .views import GmailView, GmailCallbackView, favicon_view
 urlpatterns = [
     url(r'^$', GmailView.as_view(), name='home'),
     url(r'^callback/$', GmailCallbackView.as_view(), name='gmail-callback'),
-    # url(r'^getcontent/$', GmailCallbackView.as_view(), name='get'),
     url(r'^favicon\.ico$', favicon_view),
 ]

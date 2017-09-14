@@ -1,3 +1,7 @@
+# THIS IS A PATCHED REPAIR I MADE TO FIX THE 'PYTHON WEB SEARCH' MODULE THAT WAS BROKEN
+# https://github.com/rohithpr/py-web-search
+# AS A RESULT MOST OF THIS CODE IS NOT MINE
+
 #coding=utf-8
 
 from bs4 import BeautifulSoup

@@ -149,6 +149,13 @@ def google_search(_sentence):
 
 
 def scrape(_dict):
+    """
+    Takes a Dictionary
+    Returns a Dictionary
+    ---
+    Performs webscraping from user sentences
+    Returning all the scraped text and images
+    """
     for i, sentence in enumerate(_dict['sentences']):
         s = [word for word in str(sentence).split(
             sep=' ') if word not in string.punctuation]

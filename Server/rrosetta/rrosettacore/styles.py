@@ -1,3 +1,5 @@
+## THIS ZINE CONTAINS FUNCTIONS FOR FORMATTING AND STYLING THE ZINES
+
 import math
 import re
 from random import randint
@@ -11,6 +13,11 @@ from reportlab.platypus import Image, Paragraph, Spacer
 
 
 class Fonts:
+    """
+    Loads Fonts
+    
+    These must have been preinstalled on computer system
+    """
     from reportlab.pdfbase.ttfonts import TTFont
     fonts = [  
         TTFont('Reg', 'Hans-Grotesque.ttf'),
@@ -20,6 +27,10 @@ class Fonts:
     ]
 
 class Stylesheet:
+    """
+    A selection of stylesheets
+    for various purposes
+    """
     stylesheet = {'default': ParagraphStyle(
         'default',
         fontName='Reg',
@@ -76,6 +87,9 @@ class Stylesheet:
     )
 
 class Framer:
+    """
+    Determines size of page frame
+    """
     def __init__(self):
         from reportlab.platypus import Frame
         border = (A5[0] - A6[0]) / 2
@@ -83,6 +97,9 @@ class Framer:
         self.frame.split
 
 class Storey:
+    """
+    Fills page frame with content
+    """
     def __init__(self, _dict):  
         self.dict = _dict
         self.photos = [k for k in _dict['img']
@@ -100,7 +117,10 @@ class Storey:
         return story
 
     def gen_flowable(self):
-        flow = randint(0,randint(1,2))
+        """
+        Picks content from pool of content
+        """
+        flow = randint(0,randint(1,2))          ## Weighted random numbers to balance text to image ratio
         if flow == 0:
             try:
                 photo = self.photos[randint(0, len(self.photos)-1)]

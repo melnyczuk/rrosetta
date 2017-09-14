@@ -2,6 +2,12 @@ import string
 import re
 
 def remove_symbols(_sentence):
+    """
+    Takes a String
+    Returns a List of Strings
+    ---
+    Removes anything that is not part of the alphabets
+    """
     tokens = [token for token in _sentence.split(sep=' ') if token.isalpha()]
 #-------------------------
     
