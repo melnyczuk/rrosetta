@@ -49,7 +49,7 @@ class Zine:
         Essential parameters of the Zine
         """
         self.dict = _dict
-        self.filename = "./pdfs/{}.pdf".format(_dict['user'])
+        self.filename = "print.pdf"
         self.canvas = Canvas(self.filename, A5, bottomup=1)
         self.doc = self.setup_doc()
         self.font = styles.Fonts.fonts[0].fontName
@@ -132,7 +132,7 @@ class Zine:
         story.append(Spacer(A5[0], A5[1] / 20))
         for i in [Paragraph(sentence.title(), self.style['title']) for sentence in self.dict['sentences']]:
             story.append(i)
-        story.append(Spacer(A5[0], A5[1] / 4))
+        story.append(Spacer(A5[0], A5[1] / 10))
         story.append(Paragraph("printed by Free Wifi Press at {time} on {date}".format(time=time.strftime(
             "%H:%M"), date=time.strftime("%d-%m-%Y")), self.style['rrosetta']))
 

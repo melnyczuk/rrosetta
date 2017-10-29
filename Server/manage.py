@@ -2,6 +2,8 @@
 import os
 import sys
 
+DEFAULT_SETTINGS_MODULE = os.environ.setdefault("DJANGO_SETTINGS_MODULE", "server.settings")
+
 if __name__ == "__main__":
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "server.settings")
     try:
