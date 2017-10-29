@@ -1,9 +1,0 @@
-howto.txt
-
-—
-cd hpm/rrosetta
-python3 server/manage.py runserver 6666
-ngrok http -region=eu -subdomain=rrosetta 127.0.0.1:6666
-
-—
-index.html --> ln 158 —> https://rrosetta.eu.ngrok.io
