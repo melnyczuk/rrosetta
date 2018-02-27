@@ -11,27 +11,19 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
 import os
+from secretsettings import .
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = './secretsettings.txt'
-#GOOGLE_OAUTH2_CLIENT_SECRETS_JSON = "./client_secret_2.json"
-GOOGLE_OAUTH2_CLIENT_SECRET = "KwwSIjYjFagjPac9-9buPSEJ"
-GOOGLE_OAUTH2_CLIENT_ID = "240841548439-806a8ge6r5d1li7tqe4g8f0iocg5ihnf.apps.googleusercontent.com"
-GOOGLE_OAUTH2_SCOPE = ["https://www.googleapis.com/auth/gmail.readonly",]
+GOOGLE_OAUTH2_SCOPE = ["https://www.googleapis.com/auth/gmail.readonly", ]
 GOOGLE_OAUTH2_REDIRECT_URI = "https://rrosetta-staging.herokuapp.com/callback"
 
+DEBUG = False
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = ['127.0.0.1', 'rrosetta.eu.ngrok.io', 'rrosetta-staging.herokuapp.com']
+ALLOWED_HOSTS = ['rrosetta-staging.herokuapp.com']
 
 # Application definition
 
@@ -141,14 +133,16 @@ RQ_QUEUES = {
         'HOST': 'localhost',
         'PORT': 6379,
         'DB': 0,
-        'URL': os.getenv('REDISTOGO_URL', 'redis://localhost:6379/0'), # If you're on Heroku
+        # If you're on Heroku
+        'URL': os.getenv('REDISTOGO_URL', 'redis://localhost:6379/0'),
         'DEFAULT_TIMEOUT': 600,
     },
     'high': {
         'HOST': 'localhost',
         'PORT': 6379,
         'DB': 0,
-        'URL': os.getenv('REDISTOGO_URL', 'redis://localhost:6379/0'), # If you're on Heroku
+        # If you're on Heroku
+        'URL': os.getenv('REDISTOGO_URL', 'redis://localhost:6379/0'),
         'DEFAULT_TIMEOUT': 600,
     },
     'low': {

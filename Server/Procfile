@@ -1,2 +1,0 @@
-web: gunicorn server.wsgi --timeout 1000000
-worker: python manage.py rqworker high default
