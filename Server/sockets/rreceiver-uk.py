@@ -1,4 +1,8 @@
-import socket, os, subprocess, time
+import socket
+import os
+import subprocess
+import time
+
 
 def listen():
     s = socket.socket()
@@ -7,7 +11,7 @@ def listen():
     s.connect(('218.214.105.53', 56456))
     s.settimeout(None)
     print("listen...")
-    f = open('print.pdf','wb')
+    f = open('print.pdf', 'wb')
     l = s.recv(1024)
     while (l):
         print("hark!")
@@ -15,13 +19,20 @@ def listen():
         l = s.recv(1024)
     f.close()
     s.close()
-    if os.path.exists("print.pdf"): take_note()
+    if os.path.exists("print.pdf"):
+        take_note()
+
 
 def take_note():
     print("a zine is born!")
-    subprocess.run(["/usr/bin/lpr", "-o portrait", "-o media=A4", "-o number-up=2", "print.pdf"]) # osx
+    # osx
+    os.startfile("print.pdf", "print")
+    # subprocess.run(["/usr/bin/lpr", "-o portrait",
+#                "-o media=A4", "-o number-up=2", "print.pdf"])
+
     os.remove("print.pdf")
     listen()
+
 
 if __name__ == "__main__":
     listen()

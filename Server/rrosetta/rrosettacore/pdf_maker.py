@@ -1,4 +1,4 @@
-## THIS SCRIPT MAKES THE PDF FILE
+# THIS SCRIPT MAKES THE PDF FILE
 
 # https://docs.djangoproject.com/en/1.8/howto/outputting-pdf/
 # https://www.davidfischer.name/2015/08/generating-pdfs-with-and-without-python/
@@ -17,9 +17,9 @@ from reportlab.pdfgen import canvas
 from reportlab.pdfgen.canvas import Canvas
 
 from reportlab.lib.pagesizes import (
-    A4, 
-    A5, 
-    A6, 
+    A4,
+    A5,
+    A6,
     landscape
 )
 
@@ -32,7 +32,7 @@ from reportlab.platypus import (
     Image
 )
 
-# from . 
+# from .
 from . import styles
 
 #=========================
@@ -78,7 +78,7 @@ class Zine:
         )
     #-------------------------
 
-    def cover(self):    
+    def cover(self):
         """
         Generates the first page of the Zine
         using the user email
@@ -101,7 +101,7 @@ class Zine:
         For _n pages,
         Generates two layers of images and text,
         giving the zine its distinct look.
-        
+
         See 'style.py' for more info 
         """
         for n in range(_n):
@@ -139,12 +139,13 @@ class Zine:
         story.append(Spacer(A5[0], A6[1] / 100))
         story.append(Paragraph("--", self.style['rrosetta']))
         story.append(Spacer(A5[0], A6[1] / 100))
-        story.append(Paragraph("Rrosetta by Howard Melnyczuk", self.style['rrosetta']))
+        story.append(
+            Paragraph("Rrosetta by Howard Melnyczuk", self.style['rrosetta']))
         story.append(Spacer(A5[0], A6[1] / 100))
         story.append(
             Paragraph("h.melnyczuk@gmail.com", self.style['rrosetta']))
         story.append(Paragraph("http://melnycz.uk", self.style['rrosetta']))
-        
+
         styles.Framer().frame.addFromList(story, self.canvas)
         self.canvas.showPage()
     #-------------------------
@@ -163,17 +164,20 @@ class Zine:
         # Find biggest image.
         for k in photos:
             if self.dict['img'][k]['dimensions'][1] / self.dict['img'][k]['dimensions'][0] > 1 and self.dict['img'][k]['dimensions'][0] > a:
-                a = self.dict['img'][k]['dimensions'][0] * self.dict['img'][k]['dimensions'][1]
+                a = self.dict['img'][k]['dimensions'][0] * \
+                    self.dict['img'][k]['dimensions'][1]
                 photo = k
         # If the image can't be pulled, remove it form the dictionary and try again with the next biggest
         try:
             img = Image(self.dict['img'][photo]['src'], A6[0], A6[1])
-            img.wrap(A6[0],A6[1])
+            img.wrap(A6[0], A6[1])
             img.hAlign = ['CENTER', 'LEFT', 'RIGHT'][0]
             return img
         except:
             photos.remove(photo)
-            return self.cover_img()              
+            return self.cover_img()
+        finally:
+            return Image("https://www.calendarclub.co.uk/-/media/productimages/20/01/200164_main.jpg", A6[0], A6[1])
 #-------------------------
 #=========================
 
@@ -207,7 +211,8 @@ def pull_json(_filepath):
 
 
 if __name__ == "__main__":
-    import sys, os, styles
+    import sys
+    import os
+    import styles
     d = pull_json(sys.argv[1])
     make(d)
-    
