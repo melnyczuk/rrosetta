@@ -1,6 +1,6 @@
 ﻿beautifulsoup4==4.6.0
 cachetools==2.0.1
-Django==1.11.28
+Django==1.11.29
 django-social-auth==0.7.28
 google-api==0.1.11
 google-api-python-client==1.6.2
