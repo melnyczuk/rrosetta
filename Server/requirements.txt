@@ -41,7 +41,7 @@ PyYAML==5.1
 reportlab==3.4.0
 requests==2.20.0
 requests-oauthlib==0.8.0
-rsa==3.4.2
+rsa==4.1
 scikit-learn==0.18.2
 scipy==0.19.1
 six==1.10.0
